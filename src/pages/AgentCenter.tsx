@@ -1,13 +1,22 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Users, Package, Truck, TrendingUp, Bell, Settings } from "lucide-react";
+import { Package, Truck, TrendingUp, Settings, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Header from "@/components/marketplace/Header";
 import { useAuth } from "@/contexts/AuthContext";
 import NotificationBell from "@/components/NotificationBell";
+import AddProductDialog from "@/components/agent/AddProductDialog";
+import ProductsTable from "@/components/agent/ProductsTable";
+import OrdersTable from "@/components/agent/OrdersTable";
+import { useAgentProducts } from "@/hooks/useProducts";
+import { useAgentOrders } from "@/hooks/useOrders";
 
 const AgentCenter = () => {
   const { user } = useAuth();
+  const { products, loading: productsLoading, refetch: refetchProducts } = useAgentProducts(user?.id);
+  const { orders, loading: ordersLoading, refetch: refetchOrders } = useAgentOrders(user?.id);
 
   if (!user) {
     return (
@@ -28,17 +37,17 @@ const AgentCenter = () => {
     );
   }
 
-  const stats = [
-    { label: "Pending Orders", value: "12", icon: Package, color: "text-secondary" },
-    { label: "Active Deliveries", value: "5", icon: Truck, color: "text-primary" },
-    { label: "Buyers Connected", value: "34", icon: Users, color: "text-accent" },
-    { label: "This Week's Earnings", value: "₵850", icon: TrendingUp, color: "text-secondary" },
-  ];
+  const pendingOrders = orders.filter((o) => o.status === "pending").length;
+  const confirmedOrders = orders.filter((o) => o.status === "confirmed").length;
+  const totalEarnings = orders
+    .filter((o) => o.status === "delivered")
+    .reduce((sum, o) => sum + o.total_price, 0);
 
-  const recentOrders = [
-    { id: "ORD-001", buyer: "Kofi Mensah", produce: "Yam Tubers", qty: "50 tubers", status: "Pending" },
-    { id: "ORD-002", buyer: "Ama Serwaa", produce: "Fresh Tomatoes", qty: "100 kg", status: "In Transit" },
-    { id: "ORD-003", buyer: "Kwame Asante", produce: "Mixed Peppers", qty: "30 kg", status: "Delivered" },
+  const stats = [
+    { label: "Pending Orders", value: pendingOrders.toString(), icon: Package, color: "text-secondary" },
+    { label: "Active Deliveries", value: confirmedOrders.toString(), icon: Truck, color: "text-primary" },
+    { label: "Products Listed", value: products.length.toString(), icon: ShoppingBag, color: "text-accent" },
+    { label: "Total Earnings", value: `₵${totalEarnings.toFixed(0)}`, icon: TrendingUp, color: "text-secondary" },
   ];
 
   return (
@@ -50,7 +59,7 @@ const AgentCenter = () => {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-foreground">Agent Dashboard</h1>
-            <p className="text-muted-foreground">Manage orders and connect buyers with farmers</p>
+            <p className="text-muted-foreground">Manage products and orders from farmers</p>
           </div>
           <div className="flex items-center gap-4">
             <NotificationBell />
@@ -81,50 +90,46 @@ const AgentCenter = () => {
           ))}
         </div>
 
-        {/* Recent Orders */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Orders</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-border">
-                    <th className="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Order ID</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Buyer</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Produce</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Quantity</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Status</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {recentOrders.map((order) => (
-                    <tr key={order.id} className="border-b border-border">
-                      <td className="py-4 px-4 text-sm font-medium text-foreground">{order.id}</td>
-                      <td className="py-4 px-4 text-sm text-foreground">{order.buyer}</td>
-                      <td className="py-4 px-4 text-sm text-foreground">{order.produce}</td>
-                      <td className="py-4 px-4 text-sm text-foreground">{order.qty}</td>
-                      <td className="py-4 px-4">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          order.status === "Pending" ? "bg-secondary/20 text-secondary" :
-                          order.status === "In Transit" ? "bg-primary/20 text-primary" :
-                          "bg-green-100 text-green-700"
-                        }`}>
-                          {order.status}
-                        </span>
-                      </td>
-                      <td className="py-4 px-4">
-                        <Button variant="outline" size="sm">View</Button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Tabs for Products and Orders */}
+        <Tabs defaultValue="products" className="space-y-6">
+          <div className="flex items-center justify-between">
+            <TabsList>
+              <TabsTrigger value="products">My Products</TabsTrigger>
+              <TabsTrigger value="orders">Orders</TabsTrigger>
+            </TabsList>
+            <AddProductDialog onProductAdded={refetchProducts} />
+          </div>
+
+          <TabsContent value="products">
+            <Card>
+              <CardHeader>
+                <CardTitle>Product Listings</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ProductsTable 
+                  products={products} 
+                  loading={productsLoading} 
+                  onRefresh={refetchProducts} 
+                />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="orders">
+            <Card>
+              <CardHeader>
+                <CardTitle>Recent Orders</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <OrdersTable 
+                  orders={orders} 
+                  loading={ordersLoading} 
+                  onRefresh={refetchOrders} 
+                />
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </main>
     </div>
   );

@@ -44,6 +44,119 @@ export type Database = {
         }
         Relationships: []
       }
+      orders: {
+        Row: {
+          agent_id: string
+          buyer_id: string
+          cancelled_reason: string | null
+          created_at: string
+          delivery_location: string | null
+          id: string
+          notes: string | null
+          product_id: string | null
+          quantity: number
+          service_fee: number
+          status: string
+          total_price: number
+          transport_cost: number
+          transport_mode: string
+          unit_price: number
+          updated_at: string
+        }
+        Insert: {
+          agent_id: string
+          buyer_id: string
+          cancelled_reason?: string | null
+          created_at?: string
+          delivery_location?: string | null
+          id?: string
+          notes?: string | null
+          product_id?: string | null
+          quantity: number
+          service_fee?: number
+          status?: string
+          total_price: number
+          transport_cost?: number
+          transport_mode: string
+          unit_price: number
+          updated_at?: string
+        }
+        Update: {
+          agent_id?: string
+          buyer_id?: string
+          cancelled_reason?: string | null
+          created_at?: string
+          delivery_location?: string | null
+          id?: string
+          notes?: string | null
+          product_id?: string | null
+          quantity?: number
+          service_fee?: number
+          status?: string
+          total_price?: number
+          transport_cost?: number
+          transport_mode?: string
+          unit_price?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          agent_id: string
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          is_available: boolean
+          location: string | null
+          name: string
+          price: number
+          quantity: number
+          unit: string
+          updated_at: string
+        }
+        Insert: {
+          agent_id: string
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_available?: boolean
+          location?: string | null
+          name: string
+          price: number
+          quantity?: number
+          unit?: string
+          updated_at?: string
+        }
+        Update: {
+          agent_id?: string
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_available?: boolean
+          location?: string | null
+          name?: string
+          price?: number
+          quantity?: number
+          unit?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
