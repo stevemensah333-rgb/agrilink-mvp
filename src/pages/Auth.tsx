@@ -20,7 +20,8 @@ const Auth = () => {
   const location = useLocation();
 
   // Get role from URL state
-  const role = (location.state as { role?: "buyer" | "agent" })?.role || "buyer";
+  type UserRole = "buyer" | "agent" | "farmer" | "admin";
+  const role = (location.state as { role?: UserRole })?.role || "buyer";
   const redirectTo = (location.state as { redirectTo?: string })?.redirectTo || "/";
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -62,7 +63,7 @@ const Auth = () => {
           <div className="bg-card rounded-2xl shadow-xl p-8 border border-border">
             <div className="text-center mb-8">
               <h1 className="text-2xl font-bold text-foreground mb-2">
-                {isLogin ? "Welcome Back" : `Join as ${role === "agent" ? "Agent" : "Buyer"}`}
+                {isLogin ? "Welcome Back" : `Join as ${role.charAt(0).toUpperCase() + role.slice(1)}`}
               </h1>
               <p className="text-muted-foreground">
                 {isLogin

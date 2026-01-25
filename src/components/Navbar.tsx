@@ -1,22 +1,40 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Globe, ChevronDown, LogOut, User } from "lucide-react";
+import { Globe, ChevronDown, LogOut, User, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
+import { useUserRole } from "@/hooks/useUserRole";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const { user, signOut } = useAuth();
+  const { role } = useUserRole();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
     await signOut();
     navigate("/");
   };
+
+  const getRoleDashboardLink = () => {
+    switch (role) {
+      case "farmer":
+        return { path: "/farmer", label: "My Dashboard" };
+      case "agent":
+        return { path: "/agent", label: "Agent Center" };
+      case "admin":
+        return { path: "/admin", label: "Admin Dashboard" };
+      default:
+        return { path: "/marketplace", label: "Marketplace" };
+    }
+  };
+
+  const dashboardLink = getRoleDashboardLink();
 
   return (
     <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-sm border-b border-border">
@@ -58,15 +76,21 @@ const Navbar = () => {
                   <span className="hidden sm:inline">Account</span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" className="bg-card border border-border z-50">
                 <DropdownMenuItem asChild>
-                  <Link to="/marketplace">Marketplace</Link>
+                  <Link to={dashboardLink.path}>{dashboardLink.label}</Link>
                 </DropdownMenuItem>
+                {role === "buyer" && (
+                  <DropdownMenuItem asChild>
+                    <Link to="/marketplace">Marketplace</Link>
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link to="/agent">Agent Center</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/admin">Admin Dashboard</Link>
+                  <Link to="/settings" className="flex items-center gap-2">
+                    <Settings className="w-4 h-4" />
+                    Settings
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
                   <LogOut className="w-4 h-4 mr-2" />

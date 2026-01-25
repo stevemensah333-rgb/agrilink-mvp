@@ -8,7 +8,9 @@ import Index from "./pages/Index";
 import Marketplace from "./pages/Marketplace";
 import Auth from "./pages/Auth";
 import AgentCenter from "./pages/AgentCenter";
+import FarmerDashboard from "./pages/FarmerDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import Settings from "./pages/Settings";
 import USSDDemo from "./pages/USSDDemo";
 import NotFound from "./pages/NotFound";
 
@@ -26,7 +28,9 @@ const App = () => (
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/agent" element={<AgentCenter />} />
+            <Route path="/farmer" element={<FarmerDashboard />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="/ussd" element={<USSDDemo />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
