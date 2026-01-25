@@ -1,11 +1,16 @@
+import { Link, useLocation } from "react-router-dom";
 import { ShoppingCart, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Header = () => {
+  const location = useLocation();
+  
+  const isActive = (path: string) => location.pathname === path;
+  
   return (
     <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-sm border-b border-border">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+        <Link to="/" className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
             <svg
               viewBox="0 0 24 24"
@@ -22,13 +27,41 @@ const Header = () => {
             </svg>
           </div>
           <span className="font-bold text-xl text-foreground">Agri-Bridge</span>
-        </div>
+        </Link>
 
         <nav className="hidden md:flex items-center gap-8">
-          <a href="/" className="text-muted-foreground hover:text-foreground transition-colors">Home</a>
-          <a href="/marketplace" className="px-4 py-2 bg-primary/10 rounded-full text-primary font-medium">Marketplace</a>
-          <a href="/agent" className="text-muted-foreground hover:text-foreground transition-colors">Agent Center</a>
-          <a href="/admin" className="text-muted-foreground hover:text-foreground transition-colors">Admin Dashboard</a>
+          <Link 
+            to="/" 
+            className={`transition-colors ${
+              isActive("/") 
+                ? "text-foreground font-medium" 
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            Home
+          </Link>
+          <Link 
+            to="/marketplace" 
+            className={`px-4 py-2 rounded-full transition-colors ${
+              isActive("/marketplace")
+                ? "bg-primary/10 text-primary font-medium"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            Marketplace
+          </Link>
+          <Link 
+            to="/agent" 
+            className="text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Agent Center
+          </Link>
+          <Link 
+            to="/admin" 
+            className="text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Admin Dashboard
+          </Link>
         </nav>
 
         <div className="flex items-center gap-4">
