@@ -22,6 +22,14 @@ const Index = () => {
     }
   };
 
+  const handleJoinAsFarmer = () => {
+    if (user) {
+      navigate("/farmer");
+    } else {
+      navigate("/auth", { state: { role: "farmer", redirectTo: "/farmer" } });
+    }
+  };
+
   const handleJoinAsAgent = () => {
     if (user) {
       navigate("/agent");
@@ -61,6 +69,14 @@ const Index = () => {
                 >
                   Start Buying
                   <ArrowRight className="w-4 h-4" />
+                </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="h-12 px-6 border-secondary text-secondary hover:bg-secondary/5"
+                  onClick={handleJoinAsFarmer}
+                >
+                  Join as Farmer
                 </Button>
                 <Button 
                   size="lg" 
@@ -135,6 +151,26 @@ const Index = () => {
               </div>
             </div>
             
+            {/* For Farmers */}
+            <div className="bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+              <div className="aspect-[4/3] overflow-hidden">
+                <img 
+                  src={farmerPortrait} 
+                  alt="Happy farmer"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="font-bold text-lg text-foreground mb-2">For Farmers</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  List your produce, manage orders, and connect directly with buyers. Get fair prices for your harvest.
+                </p>
+                <Link to="/farmer" className="text-primary font-medium text-sm hover:underline">
+                  Farmer Dashboard →
+                </Link>
+              </div>
+            </div>
+            
             {/* For Agents */}
             <div className="bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
               <div className="aspect-[4/3] overflow-hidden">
@@ -151,26 +187,6 @@ const Index = () => {
                 </p>
                 <Link to="/agent" className="text-primary font-medium text-sm hover:underline">
                   Agent Dashboard →
-                </Link>
-              </div>
-            </div>
-            
-            {/* For Admins */}
-            <div className="bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-              <div className="aspect-[4/3] overflow-hidden">
-                <img 
-                  src={farmerPortrait} 
-                  alt="Happy farmer"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="font-bold text-lg text-foreground mb-2">For Admins</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Optimize logistics, pool orders, and track payments. Smart routing saves money for everyone.
-                </p>
-                <Link to="/admin" className="text-primary font-medium text-sm hover:underline">
-                  Admin Panel →
                 </Link>
               </div>
             </div>

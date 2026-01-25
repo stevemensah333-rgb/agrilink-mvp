@@ -1,12 +1,15 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
+
+type UserRole = Database["public"]["Enums"]["user_role"];
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string, fullName: string, role: "buyer" | "agent") => Promise<void>;
+  signUp: (email: string, password: string, fullName: string, role: UserRole) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -38,7 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string, fullName: string, role: "buyer" | "agent") => {
+  const signUp = async (email: string, password: string, fullName: string, role: UserRole) => {
     const { error } = await supabase.auth.signUp({
       email,
       password,

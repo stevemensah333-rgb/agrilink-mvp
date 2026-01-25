@@ -54,9 +54,11 @@ const AgentCenter = () => {
           </div>
           <div className="flex items-center gap-4">
             <NotificationBell />
-            <Button variant="outline" size="icon">
-              <Settings className="w-5 h-5" />
-            </Button>
+            <Link to="/settings">
+              <Button variant="outline" size="icon">
+                <Settings className="w-5 h-5" />
+              </Button>
+            </Link>
           </div>
         </div>
 
