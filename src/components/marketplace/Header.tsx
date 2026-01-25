@@ -1,11 +1,26 @@
-import { Link, useLocation } from "react-router-dom";
-import { ShoppingCart, User } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { ShoppingCart, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
+import NotificationBell from "@/components/NotificationBell";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
   
   const isActive = (path: string) => location.pathname === path;
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
   
   return (
     <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-sm border-b border-border">
@@ -52,26 +67,68 @@ const Header = () => {
           </Link>
           <Link 
             to="/agent" 
-            className="text-muted-foreground hover:text-foreground transition-colors"
+            className={`transition-colors ${
+              isActive("/agent")
+                ? "text-foreground font-medium"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
           >
             Agent Center
           </Link>
           <Link 
             to="/admin" 
-            className="text-muted-foreground hover:text-foreground transition-colors"
+            className={`transition-colors ${
+              isActive("/admin")
+                ? "text-foreground font-medium"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
           >
             Admin Dashboard
+          </Link>
+          <Link 
+            to="/ussd" 
+            className={`transition-colors ${
+              isActive("/ussd")
+                ? "text-foreground font-medium"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            USSD Demo
           </Link>
         </nav>
 
         <div className="flex items-center gap-4">
+          {user && <NotificationBell />}
           <Button variant="ghost" size="icon" className="relative">
             <ShoppingCart className="w-5 h-5" />
           </Button>
-          <Button variant="outline" className="gap-2">
-            <User className="w-4 h-4" />
-            <span className="hidden sm:inline">Kofi</span>
-          </Button>
+          
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="gap-2">
+                  <User className="w-4 h-4" />
+                  <span className="hidden sm:inline">Account</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem className="text-muted-foreground text-sm">
+                  {user.email}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Link to="/auth">
+              <Button variant="outline" className="gap-2">
+                <User className="w-4 h-4" />
+                <span className="hidden sm:inline">Sign In</span>
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </header>
