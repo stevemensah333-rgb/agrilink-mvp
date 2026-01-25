@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
+import { useAuth } from "@/contexts/AuthContext";
 
 // Import images
 import farmerHero from "@/assets/farmer-hero.jpg";
@@ -10,6 +11,25 @@ import leafyGreens from "@/assets/leafy-greens.jpg";
 import farmerPortrait from "@/assets/farmer-portrait.jpg";
 
 const Index = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleStartBuying = () => {
+    if (user) {
+      navigate("/marketplace");
+    } else {
+      navigate("/auth", { state: { role: "buyer", redirectTo: "/marketplace" } });
+    }
+  };
+
+  const handleJoinAsAgent = () => {
+    if (user) {
+      navigate("/agent");
+    } else {
+      navigate("/auth", { state: { role: "agent", redirectTo: "/agent" } });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -34,17 +54,22 @@ const Index = () => {
               </p>
               
               <div className="flex flex-wrap gap-4">
-                <Link to="/marketplace">
-                  <Button size="lg" className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground h-12 px-6">
-                    Start Buying
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </Link>
-                <Link to="/agent">
-                  <Button size="lg" variant="outline" className="h-12 px-6 border-primary text-primary hover:bg-primary/5">
-                    Join as Agent
-                  </Button>
-                </Link>
+                <Button 
+                  size="lg" 
+                  className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground h-12 px-6"
+                  onClick={handleStartBuying}
+                >
+                  Start Buying
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="h-12 px-6 border-primary text-primary hover:bg-primary/5"
+                  onClick={handleJoinAsAgent}
+                >
+                  Join as Agent
+                </Button>
               </div>
             </div>
             
@@ -169,7 +194,6 @@ const Index = () => {
         </div>
       </section>
       
-      
       {/* CTA Section */}
       <section className="py-16 md:py-20 px-4 hero-section">
         <div className="container mx-auto text-center">
@@ -180,12 +204,14 @@ const Index = () => {
             Join thousands of farmers and buyers already using Agri-Bridge to connect, trade, and grow together.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/marketplace">
-              <Button size="lg" className="gap-2 bg-secondary hover:bg-secondary/90 text-secondary-foreground h-12 px-8">
-                Get Started Now
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-            </Link>
+            <Button 
+              size="lg" 
+              className="gap-2 bg-secondary hover:bg-secondary/90 text-secondary-foreground h-12 px-8"
+              onClick={handleStartBuying}
+            >
+              Get Started Now
+              <ArrowRight className="w-4 h-4" />
+            </Button>
           </div>
         </div>
       </section>

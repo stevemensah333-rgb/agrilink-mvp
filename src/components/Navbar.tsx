@@ -1,10 +1,23 @@
-import { Link, useLocation } from "react-router-dom";
-import { Globe, ChevronDown } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Globe, ChevronDown, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
-  const location = useLocation();
-  
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
+
   return (
     <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-sm border-b border-border">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -36,12 +49,38 @@ const Navbar = () => {
             <span>English</span>
             <ChevronDown className="w-4 h-4" />
           </button>
-          
-          <Link to="/marketplace">
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-              Get Started
-            </Button>
-          </Link>
+
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="gap-2">
+                  <User className="w-4 h-4" />
+                  <span className="hidden sm:inline">Account</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link to="/marketplace">Marketplace</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/agent">Agent Center</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/admin">Admin Dashboard</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Link to="/auth">
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                Get Started
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </header>
