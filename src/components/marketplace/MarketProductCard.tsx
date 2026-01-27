@@ -1,5 +1,6 @@
 import { Check, Minus, Plus, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getProduceImage } from "@/lib/produceImages";
 
 interface Product {
   id: string;
@@ -22,17 +23,7 @@ interface MarketProductCardProps {
   onSelect: (id: string) => void;
 }
 
-// Default images for categories
-const categoryImages: Record<string, string> = {
-  Vegetables: "/placeholder.svg",
-  Fruits: "/placeholder.svg",
-  Tubers: "/placeholder.svg",
-  Grains: "/placeholder.svg",
-  Legumes: "/placeholder.svg",
-  Spices: "/placeholder.svg",
-};
-
-const MarketProductCard = ({ 
+const MarketProductCard = ({
   product, 
   selectedQuantity, 
   isSelected, 
@@ -41,6 +32,9 @@ const MarketProductCard = ({
 }: MarketProductCardProps) => {
   const total = product.price * selectedQuantity;
   const maxQty = product.quantity;
+  
+  // Use stored image_url or auto-detect from name/category
+  const productImage = product.image_url || getProduceImage(product.name, product.category);
 
   return (
     <div 
@@ -61,7 +55,7 @@ const MarketProductCard = ({
       {/* Product Image */}
       <div className="relative aspect-[5/4] overflow-hidden bg-muted">
         <img
-          src={product.image_url || categoryImages[product.category] || "/placeholder.svg"}
+          src={productImage}
           alt={product.name}
           className="w-full h-full object-cover"
         />
