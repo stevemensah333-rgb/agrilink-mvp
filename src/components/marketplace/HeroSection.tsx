@@ -12,7 +12,7 @@ const HeroSection = ({ searchQuery, onSearchChange }: HeroSectionProps) => {
     <section className="hero-section py-12 px-4">
       <div className="container mx-auto">
         <h1 className="text-3xl md:text-4xl font-bold text-primary-foreground mb-3">
-          Agri-Bridge Market
+          AgriLink Market
         </h1>
         <p className="text-primary-foreground/80 text-lg mb-8">
           Connect directly with farmers. Choose your transport. Fair prices for everyone.

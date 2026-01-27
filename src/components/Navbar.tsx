@@ -56,7 +56,7 @@ const Navbar = () => {
             </svg>
           </div>
           <div>
-            <span className="font-bold text-xl text-foreground">Agri-Bridge</span>
+            <span className="font-bold text-xl text-foreground">AgriLink</span>
             <p className="text-xs text-muted-foreground">Farm to Table, Simplified</p>
           </div>
         </Link>
