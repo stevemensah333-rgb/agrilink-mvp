@@ -9,8 +9,8 @@ const USSDDemo = () => {
 
   const screens = [
     {
-      title: "Welcome to Agri-Bridge",
-      content: `Welcome to Agri-Bridge
+      title: "Welcome to AgriLink",
+      content: `Welcome to AgriLink
       
 1. Buy Produce
 2. Sell Produce
@@ -67,7 +67,7 @@ Total: 500 GHS
 Order ID: AGR-2026-001
 An agent will contact you shortly.
 
-Thank you for using Agri-Bridge!
+Thank you for using AgriLink!
 
 Press any key to start over.`,
     },
@@ -104,7 +104,7 @@ Press any key to start over.`,
           </div>
           <h1 className="text-3xl font-bold text-foreground mb-4">USSD Demo</h1>
           <p className="text-muted-foreground">
-            Experience how Agri-Bridge works on basic phones without internet access.
+            Experience how AgriLink works on basic phones without internet access.
             Dial *123*456# to access the real service.
           </p>
         </div>
@@ -116,7 +116,7 @@ Press any key to start over.`,
               {/* Phone Header */}
               <div className="bg-primary px-4 py-3 flex items-center justify-between">
                 <span className="text-primary-foreground text-sm font-medium">*123*456#</span>
-                <span className="text-primary-foreground/70 text-xs">Agri-Bridge</span>
+                <span className="text-primary-foreground/70 text-xs">AgriLink</span>
               </div>
 
               {/* Screen Content */}

@@ -41,7 +41,7 @@ const Header = () => {
               <path d="M2 12l10 5 10-5" />
             </svg>
           </div>
-          <span className="font-bold text-xl text-foreground">Agri-Bridge</span>
+          <span className="font-bold text-xl text-foreground">AgriLink</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">

@@ -39,7 +39,7 @@ const Auth = () => {
         await signUp(email, password, fullName, role);
         toast({
           title: "Account created!",
-          description: "Welcome to Agri-Bridge.",
+          description: "Welcome to AgriLink.",
         });
       }
       navigate(redirectTo);
@@ -67,7 +67,7 @@ const Auth = () => {
               </h1>
               <p className="text-muted-foreground">
                 {isLogin
-                  ? "Sign in to continue to Agri-Bridge"
+                  ? "Sign in to continue to AgriLink"
                   : "Create your account to get started"}
               </p>
             </div>

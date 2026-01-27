@@ -58,7 +58,7 @@ const Index = () => {
               </h1>
               
               <p className="text-lg text-muted-foreground mb-8 max-w-lg">
-                Direct connections. Fair prices. Transparent logistics. Whether you have internet or not, Agri-Bridge connects you to Ghana's agricultural marketplace.
+                Direct connections. Fair prices. Transparent logistics. Whether you have internet or not, AgriLink connects you to Ghana's agricultural marketplace.
               </p>
               
               <div className="flex flex-wrap gap-4">
@@ -123,7 +123,7 @@ const Index = () => {
         <div className="container mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              How Agri-Bridge Works
+              How AgriLink Works
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               A complete ecosystem connecting farmers, buyers, agents, and transporters
@@ -217,7 +217,7 @@ const Index = () => {
             Ready to Transform Agricultural Trade?
           </h2>
           <p className="text-primary-foreground/80 text-lg mb-8 max-w-2xl mx-auto">
-            Join thousands of farmers and buyers already using Agri-Bridge to connect, trade, and grow together.
+            Join thousands of farmers and buyers already using AgriLink to connect, trade, and grow together.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Button 
@@ -236,7 +236,7 @@ const Index = () => {
       <footer className="py-8 px-4 border-t border-border">
         <div className="container mx-auto text-center">
           <p className="text-muted-foreground text-sm">
-            © 2026 Agri-Bridge. Connecting Ghana's Agricultural Network.
+            © 2026 AgriLink. Connecting Ghana's Agricultural Network.
           </p>
         </div>
       </footer>

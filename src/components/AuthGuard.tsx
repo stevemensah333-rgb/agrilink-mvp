@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
-import { Loader2, ShoppingCart, Wheat, Users } from "lucide-react";
+import { Loader2, ShoppingCart, Wheat, Users, Shield } from "lucide-react";
 import Header from "@/components/marketplace/Header";
 
 interface AuthGuardProps {
   children: React.ReactNode;
-  role: "buyer" | "farmer" | "agent";
+  role: "buyer" | "farmer" | "agent" | "admin";
   redirectTo: string;
 }
 
@@ -28,6 +28,12 @@ const roleConfig = {
     description: "Sign in or create an account to access your agent dashboard",
     buttonText: "Sign In as Agent",
     icon: Users,
+  },
+  admin: {
+    title: "Admin Dashboard",
+    description: "Sign in with admin credentials to access the admin panel",
+    buttonText: "Sign In as Admin",
+    icon: Shield,
   },
 };
 
