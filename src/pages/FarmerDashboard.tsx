@@ -3,31 +3,10 @@ import { Package, TrendingUp, Wheat, Users, Settings, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Header from "@/components/marketplace/Header";
-import { useAuth } from "@/contexts/AuthContext";
+import AuthGuard from "@/components/AuthGuard";
 import NotificationBell from "@/components/NotificationBell";
 
 const FarmerDashboard = () => {
-  const { user } = useAuth();
-
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <div className="container mx-auto px-4 py-16 text-center">
-          <h1 className="text-3xl font-bold text-foreground mb-4">Farmer Dashboard</h1>
-          <p className="text-muted-foreground mb-8">
-            Sign in as a farmer to manage your produce and orders
-          </p>
-          <Link to="/auth" state={{ role: "farmer", redirectTo: "/farmer" }}>
-            <Button className="bg-primary hover:bg-primary/90">
-              Sign In as Farmer
-            </Button>
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
   const stats = [
     { label: "Active Listings", value: "8", icon: Wheat, color: "text-primary" },
     { label: "Pending Orders", value: "15", icon: Package, color: "text-secondary" },
@@ -48,10 +27,11 @@ const FarmerDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      
-      <main className="container mx-auto px-4 py-8">
+    <AuthGuard role="farmer" redirectTo="/farmer">
+      <div className="min-h-screen bg-background">
+        <Header />
+        
+        <main className="container mx-auto px-4 py-8">
         {/* Header with notifications */}
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -144,7 +124,8 @@ const FarmerDashboard = () => {
           </Card>
         </div>
       </main>
-    </div>
+      </div>
+    </AuthGuard>
   );
 };
 
