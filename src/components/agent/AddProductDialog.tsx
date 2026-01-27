@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Loader2, Plus } from "lucide-react";
+import { Loader2, Plus, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -31,6 +31,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { availableProduceImages, getProduceImage } from "@/lib/produceImages";
 
 const productSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").max(100),
@@ -40,6 +41,7 @@ const productSchema = z.object({
   unit: z.string().min(1, "Please select a unit"),
   category: z.string().min(1, "Please select a category"),
   location: z.string().min(2, "Location is required").max(200),
+  selectedImage: z.string().optional(),
 });
 
 type ProductFormValues = z.infer<typeof productSchema>;
@@ -67,14 +69,26 @@ const AddProductDialog = ({ onProductAdded }: AddProductDialogProps) => {
       unit: "kg",
       category: "Vegetables",
       location: "",
+      selectedImage: "",
     },
   });
+
+  // Get the auto-detected image based on product name and category
+  const watchedName = form.watch("name");
+  const watchedCategory = form.watch("category");
+  const watchedSelectedImage = form.watch("selectedImage");
+  
+  const autoImage = getProduceImage(watchedName || "", watchedCategory || "Vegetables");
+  const finalImage = watchedSelectedImage || autoImage;
 
   const onSubmit = async (values: ProductFormValues) => {
     if (!user) return;
 
     setLoading(true);
     try {
+      // Use selected image or auto-detected image
+      const imageToUse = values.selectedImage || getProduceImage(values.name, values.category);
+      
       const { error } = await supabase.from("products").insert({
         agent_id: user.id,
         name: values.name,
@@ -84,6 +98,7 @@ const AddProductDialog = ({ onProductAdded }: AddProductDialogProps) => {
         unit: values.unit,
         category: values.category,
         location: values.location,
+        image_url: imageToUse,
         is_available: true,
       });
 
@@ -116,7 +131,7 @@ const AddProductDialog = ({ onProductAdded }: AddProductDialogProps) => {
           Add Product
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Add Farm Produce</DialogTitle>
         </DialogHeader>
@@ -135,6 +150,54 @@ const AddProductDialog = ({ onProductAdded }: AddProductDialogProps) => {
                 </FormItem>
               )}
             />
+
+            {/* Image Preview and Selection */}
+            <div className="space-y-3">
+              <FormLabel>Product Image</FormLabel>
+              <div className="flex items-start gap-4">
+                {/* Current Image Preview */}
+                <div className="w-24 h-24 rounded-lg overflow-hidden border-2 border-primary bg-muted flex-shrink-0">
+                  <img 
+                    src={finalImage} 
+                    alt="Product preview" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                
+                {/* Image Selection Grid */}
+                <div className="flex-1">
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Auto-detected from name, or select manually:
+                  </p>
+                  <div className="grid grid-cols-4 gap-2">
+                    {availableProduceImages.map((item) => (
+                      <button
+                        key={item.name}
+                        type="button"
+                        onClick={() => form.setValue("selectedImage", item.image)}
+                        className={`relative w-14 h-14 rounded-md overflow-hidden border-2 transition-all ${
+                          watchedSelectedImage === item.image 
+                            ? "border-primary ring-2 ring-primary/20" 
+                            : "border-border hover:border-primary/50"
+                        }`}
+                        title={item.name}
+                      >
+                        <img 
+                          src={item.image} 
+                          alt={item.name} 
+                          className="w-full h-full object-cover"
+                        />
+                        {watchedSelectedImage === item.image && (
+                          <div className="absolute inset-0 bg-primary/20 flex items-center justify-center">
+                            <Check className="w-4 h-4 text-primary" />
+                          </div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <FormField
               control={form.control}
