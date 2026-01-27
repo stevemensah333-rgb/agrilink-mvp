@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Package, Truck, TrendingUp, Settings, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Header from "@/components/marketplace/Header";
+import AuthGuard from "@/components/AuthGuard";
 import { useAuth } from "@/contexts/AuthContext";
 import NotificationBell from "@/components/NotificationBell";
 import AddProductDialog from "@/components/agent/AddProductDialog";
@@ -17,25 +17,6 @@ const AgentCenter = () => {
   const { user } = useAuth();
   const { products, loading: productsLoading, refetch: refetchProducts } = useAgentProducts(user?.id);
   const { orders, loading: ordersLoading, refetch: refetchOrders } = useAgentOrders(user?.id);
-
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <div className="container mx-auto px-4 py-16 text-center">
-          <h1 className="text-3xl font-bold text-foreground mb-4">Agent Center</h1>
-          <p className="text-muted-foreground mb-8">
-            Sign in as an agent to access your dashboard
-          </p>
-          <Link to="/auth" state={{ role: "agent", redirectTo: "/agent" }}>
-            <Button className="bg-primary hover:bg-primary/90">
-              Sign In as Agent
-            </Button>
-          </Link>
-        </div>
-      </div>
-    );
-  }
 
   const pendingOrders = orders.filter((o) => o.status === "pending").length;
   const confirmedOrders = orders.filter((o) => o.status === "confirmed").length;
@@ -51,10 +32,11 @@ const AgentCenter = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      
-      <main className="container mx-auto px-4 py-8">
+    <AuthGuard role="agent" redirectTo="/agent">
+      <div className="min-h-screen bg-background">
+        <Header />
+        
+        <main className="container mx-auto px-4 py-8">
         {/* Header with notifications */}
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -131,7 +113,8 @@ const AgentCenter = () => {
           </TabsContent>
         </Tabs>
       </main>
-    </div>
+      </div>
+    </AuthGuard>
   );
 };
 
