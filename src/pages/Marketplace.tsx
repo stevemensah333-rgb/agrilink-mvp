@@ -6,6 +6,7 @@ import MarketProductCard from "@/components/marketplace/MarketProductCard";
 import TransportSelector from "@/components/marketplace/TransportSelector";
 import BuyerOrderSummary from "@/components/marketplace/BuyerOrderSummary";
 import AuthGuard from "@/components/AuthGuard";
+import RoleGuard from "@/components/RoleGuard";
 import { useAvailableProducts } from "@/hooks/useProducts";
 import { Loader2 } from "lucide-react";
 
@@ -104,7 +105,8 @@ const Marketplace = () => {
 
   return (
     <AuthGuard role="buyer" redirectTo="/marketplace">
-      <div className="min-h-screen bg-background">
+      <RoleGuard allowedRoles={["buyer"]}>
+        <div className="min-h-screen bg-background">
         <Header />
         <HeroSection searchQuery={searchQuery} onSearchChange={setSearchQuery} />
 
@@ -190,7 +192,8 @@ const Marketplace = () => {
             </div>
           </div>
         </main>
-      </div>
+        </div>
+      </RoleGuard>
     </AuthGuard>
   );
 };

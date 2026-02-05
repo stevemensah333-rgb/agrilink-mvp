@@ -1,28 +1,108 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { ArrowRight, Loader2 } from "lucide-react";
+import { ArrowRight, Loader2, AlertCircle, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
+
+type UserRole = "buyer" | "agent" | "farmer" | "admin";
+
+interface RoleFieldConfig {
+  fields: string[];
+  title: string;
+  description: string;
+}
+
+const roleConfig: Record<UserRole, RoleFieldConfig> = {
+  buyer: {
+    fields: ["fullName", "email", "location", "password"],
+    title: "Buyer",
+    description: "Shop for fresh farm produce",
+  },
+  farmer: {
+    fields: ["fullName", "location", "momoNumber", "phone", "email", "password"],
+    title: "Farmer",
+    description: "Sell your produce directly",
+  },
+  agent: {
+    fields: ["fullName", "agrilinkId", "email", "password"],
+    title: "Agent",
+    description: "Connect farmers and buyers",
+  },
+  admin: {
+    fields: ["agrilinkId", "email", "password"],
+    title: "Admin",
+    description: "Manage the platform",
+  },
+};
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
+  const [location, setLocation] = useState("");
+  const [momoNumber, setMomoNumber] = useState("");
+  const [phone, setPhone] = useState("");
+  const [agrilinkId, setAgrilinkId] = useState("");
   const [loading, setLoading] = useState(false);
+  const [idValidating, setIdValidating] = useState(false);
+  const [idValid, setIdValid] = useState<boolean | null>(null);
+  const [idError, setIdError] = useState("");
+  
   const { signIn, signUp } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const location = useLocation();
+  const locationState = useLocation();
 
-  // Get role from URL state
-  type UserRole = "buyer" | "agent" | "farmer" | "admin";
-  const role = (location.state as { role?: UserRole })?.role || "buyer";
-  const redirectTo = (location.state as { redirectTo?: string })?.redirectTo || "/";
+  const role = (locationState.state as { role?: UserRole })?.role || "buyer";
+  const redirectTo = (locationState.state as { redirectTo?: string })?.redirectTo || "/";
+  const config = roleConfig[role];
+
+  // Validate AgriLink ID for agents and admins
+  useEffect(() => {
+    if (!agrilinkId || isLogin) {
+      setIdValid(null);
+      setIdError("");
+      return;
+    }
+
+    const validateId = async () => {
+      setIdValidating(true);
+      setIdError("");
+      
+      const expectedType = role === "admin" ? "admin" : "agent";
+      
+      const { data, error } = await supabase
+        .from("agrilink_ids")
+        .select("*")
+        .eq("agrilink_id", agrilinkId.toUpperCase())
+        .eq("id_type", expectedType)
+        .maybeSingle();
+
+      if (error) {
+        setIdValid(false);
+        setIdError("Error validating ID");
+      } else if (!data) {
+        setIdValid(false);
+        setIdError(`Invalid ${role} ID. Please contact AgriLink support.`);
+      } else if (data.is_used) {
+        setIdValid(false);
+        setIdError("This ID has already been used");
+      } else {
+        setIdValid(true);
+      }
+      
+      setIdValidating(false);
+    };
+
+    const debounce = setTimeout(validateId, 500);
+    return () => clearTimeout(debounce);
+  }, [agrilinkId, role, isLogin]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,10 +116,44 @@ const Auth = () => {
           description: "You have successfully signed in.",
         });
       } else {
-        await signUp(email, password, fullName, role);
+        // Validate required fields based on role
+        if ((role === "agent" || role === "admin") && !idValid) {
+          throw new Error("Please enter a valid AgriLink ID");
+        }
+
+        // Sign up with role-specific metadata
+        const metadata: Record<string, string> = {
+          full_name: fullName || "User",
+          role: role,
+        };
+
+        if (location) metadata.location = location;
+        if (momoNumber) metadata.momo_number = momoNumber;
+        if (phone) metadata.phone = phone;
+        if (agrilinkId) metadata.agrilink_id = agrilinkId.toUpperCase();
+
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: window.location.origin,
+            data: metadata,
+          },
+        });
+
+        if (error) throw error;
+
+        // Mark AgriLink ID as used
+        if (agrilinkId && (role === "agent" || role === "admin")) {
+          await supabase
+            .from("agrilink_ids")
+            .update({ is_used: true })
+            .eq("agrilink_id", agrilinkId.toUpperCase());
+        }
+
         toast({
           title: "Account created!",
-          description: "Welcome to AgriLink.",
+          description: "Welcome to AgriLink. Please check your email to verify your account.",
         });
       }
       navigate(redirectTo);
@@ -54,6 +168,9 @@ const Auth = () => {
     }
   };
 
+  const needsAgrilinkId = !isLogin && (role === "agent" || role === "admin");
+  const canSubmit = isLogin || !needsAgrilinkId || idValid;
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -63,17 +180,18 @@ const Auth = () => {
           <div className="bg-card rounded-2xl shadow-xl p-8 border border-border">
             <div className="text-center mb-8">
               <h1 className="text-2xl font-bold text-foreground mb-2">
-                {isLogin ? "Welcome Back" : `Join as ${role.charAt(0).toUpperCase() + role.slice(1)}`}
+                {isLogin ? "Welcome Back" : `Join as ${config.title}`}
               </h1>
               <p className="text-muted-foreground">
                 {isLogin
                   ? "Sign in to continue to AgriLink"
-                  : "Create your account to get started"}
+                  : config.description}
               </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              {!isLogin && (
+              {/* Full Name - for non-admin signup */}
+              {!isLogin && config.fields.includes("fullName") && (
                 <div>
                   <Label htmlFor="fullName">Full Name</Label>
                   <Input
@@ -82,12 +200,92 @@ const Auth = () => {
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     placeholder="Enter your full name"
-                    required={!isLogin}
+                    required
                     className="mt-1"
                   />
                 </div>
               )}
 
+              {/* AgriLink ID - for agents and admins */}
+              {needsAgrilinkId && (
+                <div>
+                  <Label htmlFor="agrilinkId">
+                    AgriLink {role === "admin" ? "Admin" : "Agent"} ID
+                  </Label>
+                  <div className="relative mt-1">
+                    <Input
+                      id="agrilinkId"
+                      type="text"
+                      value={agrilinkId}
+                      onChange={(e) => setAgrilinkId(e.target.value)}
+                      placeholder={role === "admin" ? "ADM-XXX" : "AGT-XXX"}
+                      required
+                    className={`pr-10 ${
+                        idValid === true ? "border-primary" : 
+                        idValid === false ? "border-destructive" : ""
+                      }`}
+                    />
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                      {idValidating && <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />}
+                      {!idValidating && idValid === true && <CheckCircle className="w-4 h-4 text-primary" />}
+                      {!idValidating && idValid === false && <AlertCircle className="w-4 h-4 text-destructive" />}
+                    </div>
+                  </div>
+                  {idError && (
+                    <p className="text-sm text-destructive mt-1">{idError}</p>
+                  )}
+                </div>
+              )}
+
+              {/* Location - for farmers and buyers */}
+              {!isLogin && config.fields.includes("location") && (
+                <div>
+                  <Label htmlFor="location">Location</Label>
+                  <Input
+                    id="location"
+                    type="text"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder="e.g., Kumasi, Ashanti Region"
+                    required
+                    className="mt-1"
+                  />
+                </div>
+              )}
+
+              {/* MoMo Number - for farmers */}
+              {!isLogin && config.fields.includes("momoNumber") && (
+                <div>
+                  <Label htmlFor="momoNumber">Mobile Money Number</Label>
+                  <Input
+                    id="momoNumber"
+                    type="tel"
+                    value={momoNumber}
+                    onChange={(e) => setMomoNumber(e.target.value)}
+                    placeholder="024XXXXXXX"
+                    required
+                    className="mt-1"
+                  />
+                </div>
+              )}
+
+              {/* Phone - for farmers */}
+              {!isLogin && config.fields.includes("phone") && (
+                <div>
+                  <Label htmlFor="phone">Phone Number</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="024XXXXXXX"
+                    required
+                    className="mt-1"
+                  />
+                </div>
+              )}
+
+              {/* Email - always shown */}
               <div>
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -101,6 +299,7 @@ const Auth = () => {
                 />
               </div>
 
+              {/* Password - always shown */}
               <div>
                 <Label htmlFor="password">Password</Label>
                 <Input
@@ -118,7 +317,7 @@ const Auth = () => {
               <Button
                 type="submit"
                 className="w-full gap-2 bg-primary hover:bg-primary/90 text-primary-foreground"
-                disabled={loading}
+                disabled={loading || (!isLogin && !canSubmit)}
               >
                 {loading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />

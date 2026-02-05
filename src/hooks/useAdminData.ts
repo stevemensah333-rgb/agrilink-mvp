@@ -237,3 +237,55 @@ export const useAdminStats = () => {
 
   return { stats, loading, refetch: fetchStats };
 };
+
+interface Payment {
+  id: string;
+  order_id: string;
+  farmer_amount: number;
+  farmer_momo: string;
+  transport_amount: number;
+  platform_fee: number;
+  status: string;
+  created_at: string;
+  processed_at: string | null;
+}
+
+export const useAdminPayments = () => {
+  const [payments, setPayments] = useState<Payment[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchPayments = useCallback(async () => {
+    try {
+      const { data, error } = await supabase
+        .from("payments")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+      setPayments(data || []);
+    } catch (error) {
+      console.error("Error fetching payments:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchPayments();
+
+    const channel = supabase
+      .channel("admin-payments")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "payments" },
+        () => fetchPayments()
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [fetchPayments]);
+
+  return { payments, loading, refetch: fetchPayments };
+};

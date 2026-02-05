@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Header from "@/components/marketplace/Header";
 import AuthGuard from "@/components/AuthGuard";
+import RoleGuard from "@/components/RoleGuard";
 import { useAuth } from "@/contexts/AuthContext";
 import NotificationBell from "@/components/NotificationBell";
 import AddProductDialog from "@/components/agent/AddProductDialog";
@@ -33,7 +34,8 @@ const AgentCenter = () => {
 
   return (
     <AuthGuard role="agent" redirectTo="/agent">
-      <div className="min-h-screen bg-background">
+      <RoleGuard allowedRoles={["agent"]}>
+        <div className="min-h-screen bg-background">
         <Header />
         
         <main className="container mx-auto px-4 py-8">
@@ -113,7 +115,8 @@ const AgentCenter = () => {
           </TabsContent>
         </Tabs>
       </main>
-      </div>
+        </div>
+      </RoleGuard>
     </AuthGuard>
   );
 };

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Header from "@/components/marketplace/Header";
 import AuthGuard from "@/components/AuthGuard";
+import RoleGuard from "@/components/RoleGuard";
 import NotificationBell from "@/components/NotificationBell";
 import AddListingDialog from "@/components/farmer/AddListingDialog";
 import { useAuth } from "@/contexts/AuthContext";
@@ -46,7 +47,8 @@ const FarmerDashboard = () => {
 
   return (
     <AuthGuard role="farmer" redirectTo="/farmer">
-      <div className="min-h-screen bg-background">
+      <RoleGuard allowedRoles={["farmer"]}>
+        <div className="min-h-screen bg-background">
         <Header />
         
         <main className="container mx-auto px-4 py-8">
@@ -166,7 +168,8 @@ const FarmerDashboard = () => {
             </CardContent>
           </Card>
         </main>
-      </div>
+        </div>
+      </RoleGuard>
     </AuthGuard>
   );
 };
