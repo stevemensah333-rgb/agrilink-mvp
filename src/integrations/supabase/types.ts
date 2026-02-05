@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      agrilink_ids: {
+        Row: {
+          agrilink_id: string
+          created_at: string | null
+          id: string
+          id_type: string
+          is_used: boolean | null
+          used_by: string | null
+        }
+        Insert: {
+          agrilink_id: string
+          created_at?: string | null
+          id?: string
+          id_type: string
+          is_used?: boolean | null
+          used_by?: string | null
+        }
+        Update: {
+          agrilink_id?: string
+          created_at?: string | null
+          id?: string
+          id_type?: string
+          is_used?: boolean | null
+          used_by?: string | null
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           created_at: string
@@ -109,6 +136,53 @@ export type Database = {
           },
         ]
       }
+      payments: {
+        Row: {
+          created_at: string | null
+          driver_momo: string | null
+          farmer_amount: number
+          farmer_momo: string
+          id: string
+          order_id: string | null
+          platform_fee: number
+          processed_at: string | null
+          status: string | null
+          transport_amount: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          driver_momo?: string | null
+          farmer_amount: number
+          farmer_momo: string
+          id?: string
+          order_id?: string | null
+          platform_fee: number
+          processed_at?: string | null
+          status?: string | null
+          transport_amount?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          driver_momo?: string | null
+          farmer_amount?: number
+          farmer_momo?: string
+          id?: string
+          order_id?: string | null
+          platform_fee?: number
+          processed_at?: string | null
+          status?: string | null
+          transport_amount?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           agent_id: string
@@ -159,6 +233,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          agrilink_id: string | null
           avatar_url: string | null
           bio: string | null
           created_at: string
@@ -166,12 +241,14 @@ export type Database = {
           full_name: string
           id: string
           location: string | null
+          momo_number: string | null
           phone: string | null
           role: Database["public"]["Enums"]["user_role"]
           updated_at: string
           user_id: string
         }
         Insert: {
+          agrilink_id?: string | null
           avatar_url?: string | null
           bio?: string | null
           created_at?: string
@@ -179,12 +256,14 @@ export type Database = {
           full_name: string
           id?: string
           location?: string | null
+          momo_number?: string | null
           phone?: string | null
           role?: Database["public"]["Enums"]["user_role"]
           updated_at?: string
           user_id: string
         }
         Update: {
+          agrilink_id?: string | null
           avatar_url?: string | null
           bio?: string | null
           created_at?: string
@@ -192,6 +271,7 @@ export type Database = {
           full_name?: string
           id?: string
           location?: string | null
+          momo_number?: string | null
           phone?: string | null
           role?: Database["public"]["Enums"]["user_role"]
           updated_at?: string
