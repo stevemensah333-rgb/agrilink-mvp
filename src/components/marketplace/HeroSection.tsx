@@ -9,10 +9,10 @@ interface HeroSectionProps {
 
 const HeroSection = ({ searchQuery, onSearchChange }: HeroSectionProps) => {
   return (
-    <section className="hero-section py-12 px-4">
+    <section className="hero-section py-14 px-4">
       <div className="container mx-auto">
-        <h1 className="text-3xl md:text-4xl font-bold text-primary-foreground mb-3">
-          AgriLink Market
+        <h1 className="text-3xl md:text-4xl font-extrabold text-primary-foreground mb-3 tracking-tight">
+          Harvest-In Market
         </h1>
         <p className="text-primary-foreground/80 text-lg mb-8">
           Connect directly with farmers. Choose your transport. Fair prices for everyone.
@@ -28,7 +28,7 @@ const HeroSection = ({ searchQuery, onSearchChange }: HeroSectionProps) => {
               className="pl-10 bg-card h-12 border-0 shadow-lg"
             />
           </div>
-          <Button className="h-12 px-6 gap-2 bg-secondary text-secondary-foreground hover:bg-secondary/90">
+          <Button className="h-12 px-6 gap-2 bg-background text-primary hover:bg-background/90 font-semibold shadow-lg">
             <Search className="w-4 h-4" />
             Search
           </Button>

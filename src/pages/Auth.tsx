@@ -89,7 +89,7 @@ const Auth = () => {
         setIdError("Error validating ID");
       } else if (!data) {
         setIdValid(false);
-        setIdError(`Invalid ${role} ID. Please contact AgriLink support.`);
+        setIdError(`Invalid ${role} ID. Please contact Harvest-In support.`);
       } else if (data.is_used) {
         setIdValid(false);
         setIdError("This ID has already been used");
@@ -153,7 +153,7 @@ const Auth = () => {
 
         toast({
           title: "Account created!",
-          description: "Welcome to AgriLink. Please check your email to verify your account.",
+          description: "Welcome to Harvest-In. Please check your email to verify your account.",
         });
       }
       navigate(redirectTo);
@@ -184,7 +184,7 @@ const Auth = () => {
               </h1>
               <p className="text-muted-foreground">
                 {isLogin
-                  ? "Sign in to continue to AgriLink"
+                  ? "Sign in to continue to Harvest-In"
                   : config.description}
               </p>
             </div>
@@ -210,7 +210,7 @@ const Auth = () => {
               {needsAgrilinkId && (
                 <div>
                   <Label htmlFor="agrilinkId">
-                    AgriLink {role === "admin" ? "Admin" : "Agent"} ID
+                    Harvest-In {role === "admin" ? "Admin" : "Agent"} ID
                   </Label>
                   <div className="relative mt-1">
                     <Input

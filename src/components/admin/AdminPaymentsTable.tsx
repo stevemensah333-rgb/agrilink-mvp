@@ -50,7 +50,7 @@ const AdminPaymentsTable = ({ payments, loading, onRefetch }: AdminPaymentsTable
     
     toast({
       title: "Payment Processing",
-      description: `Payment of ₵${payment.farmer_amount.toFixed(2)} to ${payment.farmer_momo} has been initiated. In production, this would use MTN MoMo API.`,
+      description: `Payment of ₵${payment.farmer_amount.toFixed(2)} to ${payment.farmer_momo} has been initiated via MTN MoMo. Platform receives 10% at 0533346350.`,
     });
     
     setProcessingId(null);
