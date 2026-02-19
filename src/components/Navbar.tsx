@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Globe, ChevronDown, LogOut, User, Settings } from "lucide-react";
+import { Globe, ChevronDown, LogOut, User, Settings, Sprout } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserRole } from "@/hooks/useUserRole";
@@ -40,24 +40,12 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-sm border-b border-border">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="w-5 h-5 text-primary-foreground"
-            >
-              <path d="M12 2L2 7l10 5 10-5-10-5z" />
-              <path d="M2 17l10 5 10-5" />
-              <path d="M2 12l10 5 10-5" />
-            </svg>
+          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
+            <Sprout className="w-5 h-5 text-primary-foreground" />
           </div>
           <div>
-            <span className="font-bold text-xl text-foreground">AgriLink</span>
-            <p className="text-xs text-muted-foreground">Farm to Table, Simplified</p>
+            <span className="font-extrabold text-xl text-foreground tracking-tight">Harvest-In</span>
+            <p className="text-xs text-muted-foreground">Farm to Table</p>
           </div>
         </Link>
 
@@ -100,7 +88,7 @@ const Navbar = () => {
             </DropdownMenu>
           ) : (
             <Link to="/auth">
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold">
                 Get Started
               </Button>
             </Link>

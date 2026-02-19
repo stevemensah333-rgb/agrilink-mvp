@@ -9,8 +9,8 @@ const USSDDemo = () => {
 
   const screens = [
     {
-      title: "Welcome to AgriLink",
-      content: `Welcome to AgriLink
+      title: "Welcome to Harvest-In",
+      content: `Welcome to Harvest-In
       
 1. Buy Produce
 2. Sell Produce
@@ -64,10 +64,10 @@ Total: 500 GHS
       title: "Success",
       content: `Order Confirmed!
 
-Order ID: AGR-2026-001
+Order ID: HIN-2026-001
 An agent will contact you shortly.
 
-Thank you for using AgriLink!
+Thank you for using Harvest-In!
 
 Press any key to start over.`,
     },
@@ -104,7 +104,7 @@ Press any key to start over.`,
           </div>
           <h1 className="text-3xl font-bold text-foreground mb-4">USSD Demo</h1>
           <p className="text-muted-foreground">
-            Experience how AgriLink works on basic phones without internet access.
+            Experience how Harvest-In works on basic phones without internet access.
             Dial *123*456# to access the real service.
           </p>
         </div>
@@ -116,7 +116,7 @@ Press any key to start over.`,
               {/* Phone Header */}
               <div className="bg-primary px-4 py-3 flex items-center justify-between">
                 <span className="text-primary-foreground text-sm font-medium">*123*456#</span>
-                <span className="text-primary-foreground/70 text-xs">AgriLink</span>
+                <span className="text-primary-foreground/70 text-xs">Harvest-In</span>
               </div>
 
               {/* Screen Content */}
