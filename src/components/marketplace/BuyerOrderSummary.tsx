@@ -101,7 +101,7 @@ const BuyerOrderSummary = ({
 
       toast({
         title: "Order placed successfully!",
-        description: "Your agent will contact you shortly.",
+        description: "Your order is pending approval. You'll receive a notification with payment details once approved.",
       });
 
       onOrderPlaced();
@@ -227,7 +227,7 @@ const BuyerOrderSummary = ({
         </Button>
         
         <p className="text-xs text-center text-muted-foreground mt-3">
-          Your agent will contact the farmer within 5 minutes
+          Once approved, you'll be notified to send payment to 0533346350 (MTN)
         </p>
       </div>
     </div>
