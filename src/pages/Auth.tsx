@@ -145,9 +145,10 @@ const Auth = () => {
 
         // Mark AgriLink ID as used
         if (agrilinkId && (role === "agent" || role === "admin")) {
+          const { data: signUpData } = await supabase.auth.getUser();
           await supabase
             .from("agrilink_ids")
-            .update({ is_used: true })
+            .update({ is_used: true, used_by: signUpData?.user?.id })
             .eq("agrilink_id", agrilinkId.toUpperCase());
         }
 
