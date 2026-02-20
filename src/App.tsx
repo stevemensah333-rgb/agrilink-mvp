@@ -10,6 +10,7 @@ import Auth from "./pages/Auth";
 import AgentCenter from "./pages/AgentCenter";
 import FarmerDashboard from "./pages/FarmerDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminLogin from "./pages/AdminLogin";
 import Settings from "./pages/Settings";
 import USSDDemo from "./pages/USSDDemo";
 import NotFound from "./pages/NotFound";
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/agent" element={<AgentCenter />} />
             <Route path="/farmer" element={<FarmerDashboard />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/ussd" element={<USSDDemo />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
