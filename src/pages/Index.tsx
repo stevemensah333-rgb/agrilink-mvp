@@ -134,7 +134,7 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
             {/* Buyer Card */}
             <div className="group bg-card rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <div className="aspect-[4/3] overflow-hidden">
@@ -177,6 +177,21 @@ const Index = () => {
                 <button onClick={handleJoinAsAgent} className="text-primary font-semibold text-sm hover:underline">
                   Agent Dashboard →
                 </button>
+              </div>
+            </div>
+
+            {/* Admin Card */}
+            <div className="group bg-card rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <div className="aspect-[4/3] overflow-hidden bg-primary/10 flex items-center justify-center">
+                <ShieldCheck className="w-20 h-20 text-primary/40" />
+              </div>
+              <div className="p-6">
+                <span className="inline-block px-3 py-1 rounded-full bg-destructive/10 text-destructive text-xs font-semibold mb-3">Admin</span>
+                <h3 className="font-bold text-foreground mb-2">Control Center</h3>
+                <p className="text-sm text-muted-foreground mb-4">Manage users, orders, payments & platform analytics.</p>
+                <Link to="/admin/login" className="text-primary font-semibold text-sm hover:underline">
+                  Admin Portal →
+                </Link>
               </div>
             </div>
 
