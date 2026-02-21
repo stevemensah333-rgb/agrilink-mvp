@@ -35,6 +35,7 @@ export const useAgentOrders = (agentId: string | undefined) => {
     }
 
     try {
+      // Agents can now see ALL orders (RLS handles permissions)
       const { data, error } = await supabase
         .from("orders")
         .select(`
@@ -44,7 +45,6 @@ export const useAgentOrders = (agentId: string | undefined) => {
             unit
           )
         `)
-        .eq("agent_id", agentId)
         .order("created_at", { ascending: false });
 
       if (error) throw error;
@@ -59,7 +59,7 @@ export const useAgentOrders = (agentId: string | undefined) => {
   useEffect(() => {
     fetchOrders();
 
-    // Subscribe to realtime changes
+    // Subscribe to realtime changes for ALL orders
     const channel = supabase
       .channel("agent-orders")
       .on(
@@ -68,7 +68,6 @@ export const useAgentOrders = (agentId: string | undefined) => {
           event: "*",
           schema: "public",
           table: "orders",
-          filter: `agent_id=eq.${agentId}`,
         },
         () => {
           fetchOrders();
