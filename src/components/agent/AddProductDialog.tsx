@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Loader2, Plus, Check } from "lucide-react";
+import { Loader2, Plus, Check, Camera, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -32,6 +32,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { availableProduceImages, getProduceImage } from "@/lib/produceImages";
+import { useImageUpload } from "@/hooks/useImageUpload";
 
 const productSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").max(100),
@@ -58,6 +59,9 @@ const AddProductDialog = ({ onProductAdded }: AddProductDialogProps) => {
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
   const { toast } = useToast();
+  const { uploadImage, uploading, uploadedUrl, reset: resetUpload } = useImageUpload();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
@@ -79,7 +83,23 @@ const AddProductDialog = ({ onProductAdded }: AddProductDialogProps) => {
   const watchedSelectedImage = form.watch("selectedImage");
   
   const autoImage = getProduceImage(watchedName || "", watchedCategory || "Vegetables");
-  const finalImage = watchedSelectedImage || autoImage;
+  const finalImage = uploadedUrl || watchedSelectedImage || autoImage;
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      toast({ title: "File too large", description: "Max 5MB", variant: "destructive" });
+      return;
+    }
+    const url = await uploadImage(file);
+    if (url) {
+      form.setValue("selectedImage", url);
+      toast({ title: "Image uploaded!", description: "Your produce photo is ready." });
+    } else {
+      toast({ title: "Upload failed", description: "Please try again.", variant: "destructive" });
+    }
+  };
 
   const onSubmit = async (values: ProductFormValues) => {
     if (!user) return;
@@ -110,6 +130,7 @@ const AddProductDialog = ({ onProductAdded }: AddProductDialogProps) => {
       });
 
       form.reset();
+      resetUpload();
       setOpen(false);
       onProductAdded();
     } catch (error: any) {
@@ -164,19 +185,58 @@ const AddProductDialog = ({ onProductAdded }: AddProductDialogProps) => {
                   />
                 </div>
                 
-                {/* Image Selection Grid */}
-                <div className="flex-1">
-                  <p className="text-sm text-muted-foreground mb-2">
-                    Auto-detected from name, or select manually:
-                  </p>
+                <div className="flex-1 space-y-3">
+                  {/* Upload buttons */}
+                  <div className="flex gap-2">
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleFileChange}
+                    />
+                    <input
+                      ref={cameraInputRef}
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      className="hidden"
+                      onChange={handleFileChange}
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      disabled={uploading}
+                      onClick={() => cameraInputRef.current?.click()}
+                      className="gap-1"
+                    >
+                      {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Camera className="w-4 h-4" />}
+                      Take Photo
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      disabled={uploading}
+                      onClick={() => fileInputRef.current?.click()}
+                      className="gap-1"
+                    >
+                      <Upload className="w-4 h-4" />
+                      Upload
+                    </Button>
+                  </div>
+
+                  {/* Preset image grid */}
+                  <p className="text-sm text-muted-foreground">Or select from presets:</p>
                   <div className="grid grid-cols-4 gap-2">
                     {availableProduceImages.map((item) => (
                       <button
                         key={item.name}
                         type="button"
-                        onClick={() => form.setValue("selectedImage", item.image)}
+                        onClick={() => { form.setValue("selectedImage", item.image); resetUpload(); }}
                         className={`relative w-14 h-14 rounded-md overflow-hidden border-2 transition-all ${
-                          watchedSelectedImage === item.image 
+                          !uploadedUrl && watchedSelectedImage === item.image 
                             ? "border-primary ring-2 ring-primary/20" 
                             : "border-border hover:border-primary/50"
                         }`}
@@ -187,7 +247,7 @@ const AddProductDialog = ({ onProductAdded }: AddProductDialogProps) => {
                           alt={item.name} 
                           className="w-full h-full object-cover"
                         />
-                        {watchedSelectedImage === item.image && (
+                        {!uploadedUrl && watchedSelectedImage === item.image && (
                           <div className="absolute inset-0 bg-primary/20 flex items-center justify-center">
                             <Check className="w-4 h-4 text-primary" />
                           </div>
