@@ -3,7 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
+    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
 Deno.serve(async (req) => {
@@ -27,18 +27,55 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    // Find admin user
-    const { data: profile, error: profileError } = await supabase
+    // Find existing admin user
+    let { data: profile } = await supabase
       .from("profiles")
       .select("email, user_id")
       .eq("role", "admin")
       .limit(1)
       .single();
 
-    if (profileError || !profile) {
+    // If no admin exists, auto-create one
+    if (!profile) {
+      const adminEmail = "admin@harvestin.agrilink";
+      const adminPassword = crypto.randomUUID(); // random password, not needed for login
+
+      const { data: newUser, error: createError } = await supabase.auth.admin.createUser({
+        email: adminEmail,
+        password: adminPassword,
+        email_confirm: true,
+        user_metadata: {
+          full_name: "Kwabs Admin",
+          role: "admin",
+          agrilink_id: "ADM-001",
+        },
+      });
+
+      if (createError) {
+        console.error("Error creating admin:", createError);
+        return new Response(
+          JSON.stringify({ error: "Failed to create admin account" }),
+          { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      // Wait briefly for trigger to create profile
+      await new Promise((r) => setTimeout(r, 1000));
+
+      // Fetch the newly created profile
+      const { data: newProfile } = await supabase
+        .from("profiles")
+        .select("email, user_id")
+        .eq("user_id", newUser.user.id)
+        .single();
+
+      profile = newProfile;
+    }
+
+    if (!profile) {
       return new Response(
-        JSON.stringify({ error: "No admin account found" }),
-        { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        JSON.stringify({ error: "Admin profile not found" }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
@@ -49,6 +86,7 @@ Deno.serve(async (req) => {
     });
 
     if (linkError || !linkData) {
+      console.error("Link error:", linkError);
       return new Response(
         JSON.stringify({ error: "Failed to generate auth link" }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -63,6 +101,7 @@ Deno.serve(async (req) => {
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (err) {
+    console.error("Server error:", err);
     return new Response(
       JSON.stringify({ error: "Server error" }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
