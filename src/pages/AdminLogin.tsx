@@ -1,18 +1,16 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, Loader2, Shield } from "lucide-react";
+import { Loader2, Shield, KeyRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 
 const AdminLogin = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [passphrase, setPassphrase] = useState("");
   const [loading, setLoading] = useState(false);
-  const { signIn } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -21,16 +19,31 @@ const AdminLogin = () => {
     setLoading(true);
 
     try {
-      await signIn(email, password);
+      const { data, error } = await supabase.functions.invoke("admin-auth", {
+        body: { passphrase },
+      });
+
+      if (error || data?.error) {
+        throw new Error(data?.error || "Invalid passphrase");
+      }
+
+      // Use the token hash to verify and create session
+      const { error: verifyError } = await supabase.auth.verifyOtp({
+        token_hash: data.token_hash,
+        type: "magiclink",
+      });
+
+      if (verifyError) throw verifyError;
+
       toast({
-        title: "Welcome back, Admin!",
-        description: "You have successfully signed in.",
+        title: "Welcome, Admin!",
+        description: "Access granted to the control center.",
       });
       navigate("/admin");
     } catch (error: any) {
       toast({
-        title: "Error",
-        description: error.message,
+        title: "Access Denied",
+        description: "Invalid passphrase. You are not authorized.",
         variant: "destructive",
       });
     } finally {
@@ -53,34 +66,23 @@ const AdminLogin = () => {
                 Admin Portal
               </h1>
               <p className="text-muted-foreground">
-                Sign in with your admin credentials
+                Enter your admin passphrase to continue
               </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <Label htmlFor="email">Admin Email</Label>
+                <Label htmlFor="passphrase" className="flex items-center gap-2">
+                  <KeyRound className="w-4 h-4" />
+                  Admin Passphrase
+                </Label>
                 <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your admin email"
-                  required
-                  className="mt-1"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
+                  id="passphrase"
                   type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
+                  value={passphrase}
+                  onChange={(e) => setPassphrase(e.target.value)}
+                  placeholder="Enter your admin passphrase"
                   required
-                  minLength={6}
                   className="mt-1"
                 />
               </div>
@@ -88,31 +90,18 @@ const AdminLogin = () => {
               <Button
                 type="submit"
                 className="w-full gap-2 bg-primary hover:bg-primary/90 text-primary-foreground"
-                disabled={loading}
+                disabled={loading || !passphrase.trim()}
               >
                 {loading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
                 ) : (
-                  <>
-                    Sign In as Admin
-                    <ArrowRight className="w-4 h-4" />
-                  </>
+                  "Unlock Admin Portal"
                 )}
               </Button>
             </form>
 
-            <div className="mt-6 text-center space-y-2">
-              <p className="text-sm text-muted-foreground">
-                Need an admin account?{" "}
-                <Link
-                  to="/auth"
-                  state={{ role: "admin" }}
-                  className="text-primary hover:underline font-medium"
-                >
-                  Register with Admin ID
-                </Link>
-              </p>
-              <Link to="/" className="text-sm text-muted-foreground hover:text-foreground block">
+            <div className="mt-6 text-center">
+              <Link to="/" className="text-sm text-muted-foreground hover:text-foreground">
                 ← Back to home
               </Link>
             </div>
