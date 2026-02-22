@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Loader2, Plus, Check, Camera, Upload } from "lucide-react";
+import CameraCapture from "@/components/CameraCapture";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -61,7 +62,7 @@ const AddProductDialog = ({ onProductAdded }: AddProductDialogProps) => {
   const { toast } = useToast();
   const { uploadImage, uploading, uploadedUrl, reset: resetUpload } = useImageUpload();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const cameraInputRef = useRef<HTMLInputElement>(null);
+  const [cameraOpen, setCameraOpen] = useState(false);
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
@@ -195,24 +196,38 @@ const AddProductDialog = ({ onProductAdded }: AddProductDialogProps) => {
                       className="hidden"
                       onChange={handleFileChange}
                     />
-                    <input
-                      ref={cameraInputRef}
-                      type="file"
-                      accept="image/*"
-                      capture="environment"
-                      className="hidden"
-                      onChange={handleFileChange}
+                    <CameraCapture
+                      open={cameraOpen}
+                      onOpenChange={setCameraOpen}
+                      onCapture={async (file) => {
+                        const url = await uploadImage(file);
+                        if (url) {
+                          form.setValue("selectedImage", url);
+                          toast({ title: "Photo captured!", description: "Your produce photo is ready." });
+                        }
+                      }}
                     />
                     <Button
                       type="button"
                       variant="outline"
                       size="sm"
                       disabled={uploading}
-                      onClick={() => cameraInputRef.current?.click()}
+                      onClick={() => setCameraOpen(true)}
                       className="gap-1"
                     >
                       {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Camera className="w-4 h-4" />}
                       Take Photo
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      disabled={uploading}
+                      onClick={() => fileInputRef.current?.click()}
+                      className="gap-1"
+                    >
+                      <Upload className="w-4 h-4" />
+                      Upload
                     </Button>
                     <Button
                       type="button"
