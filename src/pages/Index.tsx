@@ -1,6 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, Phone, Sprout, Users, Truck, ShieldCheck } from "lucide-react";
+import { ArrowRight, Phone, Sprout, Users, Truck, ShieldCheck, Mail, Leaf } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -12,6 +15,15 @@ import farmerPortrait from "@/assets/farmer-portrait.jpg";
 const Index = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    company: "",
+    phone: "",
+    message: "",
+    type: "partnership"
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleGoToMarketplace = () => {
     if (user) navigate("/marketplace");
@@ -26,6 +38,41 @@ const Index = () => {
   const handleJoinAsAgent = () => {
     if (user) navigate("/agent");
     else navigate("/auth", { state: { role: "agent", redirectTo: "/agent" } });
+  };
+
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    try {
+      // Simulate form submission - replace with actual API call
+      console.log("Form submitted:", formData);
+      
+      // Reset form after submission
+      setFormData({
+        name: "",
+        email: "",
+        company: "",
+        phone: "",
+        message: "",
+        type: "partnership"
+      });
+      
+      // Show success message (implement toast notification as needed)
+      alert("Thank you! We'll be in touch soon.");
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -242,6 +289,138 @@ const Index = () => {
               </Button>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Partnership Form Section */}
+      <section className="py-20 md:py-28 px-4 bg-gradient-to-br from-primary/5 to-accent/5">
+        <div className="container mx-auto max-w-4xl">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-background/80 text-primary text-sm font-semibold shadow-sm mb-6">
+              <Leaf className="w-4 h-4" />
+              Partnership Opportunity
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+              Grow Something Great Together
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Whether you're a farmer, distributor, or partner, we're here to support your goals with sustainable solutions and direct connections.
+            </p>
+          </div>
+
+          <form onSubmit={handleFormSubmit} className="bg-card rounded-3xl p-8 md:p-12 shadow-lg border border-border">
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <div className="space-y-2">
+                <label htmlFor="name" className="text-sm font-semibold text-foreground">
+                  Full Name
+                </label>
+                <Input
+                  id="name"
+                  name="name"
+                  type="text"
+                  placeholder="James Adeyemi"
+                  value={formData.name}
+                  onChange={handleFormChange}
+                  required
+                  className="h-12 border-border/50 focus-visible:ring-primary"
+                />
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="email" className="text-sm font-semibold text-foreground">
+                  Email Address
+                </label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="james@example.com"
+                  value={formData.email}
+                  onChange={handleFormChange}
+                  required
+                  className="h-12 border-border/50 focus-visible:ring-primary"
+                />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <div className="space-y-2">
+                <label htmlFor="company" className="text-sm font-semibold text-foreground">
+                  Organization
+                </label>
+                <Input
+                  id="company"
+                  name="company"
+                  type="text"
+                  placeholder="Your Farm or Company"
+                  value={formData.company}
+                  onChange={handleFormChange}
+                  required
+                  className="h-12 border-border/50 focus-visible:ring-primary"
+                />
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="phone" className="text-sm font-semibold text-foreground">
+                  Phone Number
+                </label>
+                <Input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  placeholder="+233 XX XXX XXXX"
+                  value={formData.phone}
+                  onChange={handleFormChange}
+                  className="h-12 border-border/50 focus-visible:ring-primary"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2 mb-6">
+              <label htmlFor="type" className="text-sm font-semibold text-foreground">
+                Partnership Type
+              </label>
+              <select
+                id="type"
+                name="type"
+                value={formData.type}
+                onChange={handleFormChange}
+                className="w-full h-12 px-4 rounded-lg border border-border/50 bg-background text-foreground focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+              >
+                <option value="partnership">Strategic Partnership</option>
+                <option value="farmer">Farmer Network</option>
+                <option value="distribution">Distribution Partner</option>
+                <option value="technology">Technology Integration</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div className="space-y-2 mb-8">
+              <label htmlFor="message" className="text-sm font-semibold text-foreground">
+                Tell Us About Your Goals
+              </label>
+              <Textarea
+                id="message"
+                name="message"
+                placeholder="Share your vision and how we can grow together..."
+                value={formData.message}
+                onChange={handleFormChange}
+                required
+                className="min-h-32 border-border/50 focus-visible:ring-primary resize-none"
+              />
+            </div>
+
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold text-base rounded-lg"
+            >
+              {isSubmitting ? "Sending..." : "Start Growing Together"}
+              {!isSubmitting && <ArrowRight className="w-5 h-5 ml-2" />}
+            </Button>
+
+            <p className="text-center text-sm text-muted-foreground mt-6">
+              We'll review your inquiry and get back to you within 48 hours.
+            </p>
+          </form>
         </div>
       </section>
 
