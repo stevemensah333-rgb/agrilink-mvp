@@ -88,93 +88,100 @@ const Index = () => {
             muted
             loop
             playsInline
-            className="w-full h-full object-cover opacity-70"
+            className="w-full h-full object-cover opacity-60"
           >
             <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/yhs-Qc3elEDn2VeCqrERq50jTGyRJaRSx5.mp4" type="video/mp4" />
           </video>
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/30" />
+          {/* Advanced Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-black/85 via-black/60 to-black/40" />
         </div>
 
         {/* Hero Content */}
         <div className="relative container mx-auto px-4 py-20 md:py-32">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8 max-w-xl">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-white text-sm font-semibold shadow-sm border border-white/20 hover:bg-white/20 transition-colors">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-white text-sm font-semibold shadow-lg border border-white/20 hover:bg-white/20 transition-all duration-300">
                 <Sprout className="w-4 h-4" />
-                Ghana's Farm-to-Table Network
+                Ghana's #1 Farm-to-Table Network
               </div>
 
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.1] tracking-tight">
-                Fresh From
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight tracking-tight">
+                Fresh From The
                 <br />
-                The <span className="bg-gradient-to-r from-accent via-secondary to-primary bg-clip-text text-transparent">Harvest</span>
+                <span className="bg-gradient-to-r from-accent via-secondary to-primary bg-clip-text text-transparent">Harvest</span>
               </h1>
 
-              <p className="text-lg text-white/80 max-w-md leading-relaxed">
-                Direct connections. Fair prices. Real impact. Whether you're buying or selling, Harvest-In puts the power in your hands.
+              <p className="text-lg text-white/85 max-w-md leading-relaxed font-medium">
+                Direct connections. Fair prices. Real impact. Cut out the middlemen and connect farmers with buyers in Ghana, creating sustainable livelihoods for everyone.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <div className="flex flex-col sm:flex-row gap-4 pt-2">
                 <Button
                   size="lg"
-                  className="h-14 px-8 gap-3 bg-primary text-primary-foreground hover:bg-primary/90 font-bold text-base shadow-xl"
+                  className="h-14 px-8 gap-3 bg-primary text-primary-foreground hover:bg-primary/90 font-bold text-base shadow-2xl transition-all duration-300 hover:scale-105"
                   onClick={handleGoToMarketplace}
                 >
-                  Go to Marketplace
+                  Explore Marketplace
                   <ArrowRight className="w-5 h-5" />
                 </Button>
                 <Button
                   size="lg"
-                  className="h-14 px-8 gap-2 bg-white/10 text-white hover:bg-white/20 font-semibold border border-white/30 backdrop-blur-sm"
+                  className="h-14 px-8 gap-2 bg-white/15 text-white hover:bg-white/25 font-semibold border-2 border-white/40 backdrop-blur-sm transition-all duration-300"
                   onClick={handleJoinAsFarmer}
                 >
                   <Sprout className="w-5 h-5" />
-                  Sell Your Produce
+                  Start Selling
                 </Button>
               </div>
 
               {/* Stats */}
-              <div className="flex gap-8 pt-8 border-t border-white/10">
-                <div>
-                  <p className="text-3xl font-bold text-primary">500+</p>
-                  <p className="text-white/60 text-sm">Active Farms</p>
+              <div className="grid grid-cols-3 gap-6 pt-8 border-t border-white/15">
+                <div className="hover:transform hover:scale-105 transition-transform duration-300">
+                  <p className="text-4xl font-black text-primary">500+</p>
+                  <p className="text-white/70 text-xs mt-2 font-medium">Active Farms</p>
                 </div>
-                <div>
-                  <p className="text-3xl font-bold text-accent">10K+</p>
-                  <p className="text-white/60 text-sm">Happy Customers</p>
+                <div className="hover:transform hover:scale-105 transition-transform duration-300">
+                  <p className="text-4xl font-black text-accent">10K+</p>
+                  <p className="text-white/70 text-xs mt-2 font-medium">Happy Customers</p>
                 </div>
-                <div>
-                  <p className="text-3xl font-bold text-secondary">90%</p>
-                  <p className="text-white/60 text-sm">Fair Share</p>
+                <div className="hover:transform hover:scale-105 transition-transform duration-300">
+                  <p className="text-4xl font-black text-secondary">90%</p>
+                  <p className="text-white/70 text-xs mt-2 font-medium">To Farmers</p>
                 </div>
               </div>
             </div>
 
             {/* Right side - Hidden on mobile, shown on lg */}
             <div className="hidden lg:flex flex-col justify-center items-center space-y-6">
-              <div className="glass-card rounded-2xl p-8 border border-white/20 backdrop-blur-xl max-w-sm">
-                <div className="flex items-center gap-3 mb-4">
-                  <Users className="w-6 h-6 text-primary" />
-                  <span className="font-semibold text-white">Join Our Community</span>
+              <div className="group bg-white/10 backdrop-blur-2xl rounded-3xl p-8 border-2 border-white/20 max-w-sm hover:bg-white/15 hover:border-white/40 transition-all duration-500 shadow-2xl">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-2xl bg-primary/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <Users className="w-6 h-6 text-white" />
+                  </div>
+                  <span className="font-bold text-lg text-white">Join Our Community</span>
                 </div>
-                <p className="text-white/70 text-sm">Connect with farmers and buyers across Ghana with real-time market prices and direct shipping options.</p>
+                <p className="text-white/75 text-sm leading-relaxed">Connect with farmers and buyers with real-time market prices and flexible shipping across Ghana.</p>
               </div>
-              <div className="glass-card rounded-2xl p-8 border border-white/20 backdrop-blur-xl max-w-sm">
-                <div className="flex items-center gap-3 mb-4">
-                  <ShieldCheck className="w-6 h-6 text-accent" />
-                  <span className="font-semibold text-white">Secure & Fair</span>
+              <div className="group bg-white/10 backdrop-blur-2xl rounded-3xl p-8 border-2 border-white/20 max-w-sm hover:bg-white/15 hover:border-white/40 transition-all duration-500 shadow-2xl">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-2xl bg-accent/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <ShieldCheck className="w-6 h-6 text-white" />
+                  </div>
+                  <span className="font-bold text-lg text-white">Secure & Transparent</span>
                 </div>
-                <p className="text-white/70 text-sm">Transparent pricing, secure payments, and verified transactions on every single order.</p>
+                <p className="text-white/75 text-sm leading-relaxed">Fair pricing, verified sellers, secure payments, and disputes resolved fairly for everyone.</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center p-2">
-            <div className="w-1 h-1 bg-white/60 rounded-full animate-pulse" />
+        {/* Animated Scroll Indicator */}
+        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2">
+          <div className="flex flex-col items-center gap-3 animate-bounce">
+            <p className="text-white/60 text-xs font-semibold uppercase tracking-widest">Scroll to explore</p>
+            <div className="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center p-2 hover:border-white/60 transition-colors duration-300">
+              <div className="w-1 h-1 bg-white/60 rounded-full animate-pulse" />
+            </div>
           </div>
         </div>
       </section>
@@ -312,8 +319,199 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Industries/User Types We Serve */}
+      <section className="py-24 px-4 bg-gradient-to-b from-background via-muted/20 to-background">
+        <div className="container mx-auto">
+          <div className="text-center mb-20">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold shadow-sm mb-6">
+              <Sprout className="w-4 h-4" />
+              Who We Serve
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 leading-tight">
+              Built for Every Link in the Chain
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              From small family farms to retail buyers, Harvest-In has solutions tailored to your agricultural journey.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {[
+              {
+                icon: Sprout,
+                title: "Small Holder Farmers",
+                desc: "List your produce directly, reach buyers without middlemen, get paid fairly to MoMo wallet.",
+                features: ["List produce in minutes", "Fair pricing guarantee", "Mobile payment support"]
+              },
+              {
+                icon: Truck,
+                title: "Logistics Agents",
+                desc: "Coordinate shipments, manage routes, earn commissions, build your local agent network.",
+                features: ["Commission-based earning", "Route management tools", "Real-time tracking"]
+              },
+              {
+                icon: Users,
+                title: "Bulk Buyers & Retailers",
+                desc: "Source fresh produce directly, negotiate prices, track orders, and manage inventory.",
+                features: ["Wholesale pricing", "Bulk ordering", "Dedicated support"]
+              },
+            ].map((item, idx) => (
+              <div key={idx} className="group relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="relative bg-card rounded-3xl p-10 border border-border hover:border-primary/50 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <item.icon className="w-8 h-8 text-primary" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-foreground mb-3">{item.title}</h3>
+                  <p className="text-muted-foreground text-base mb-6 leading-relaxed">{item.desc}</p>
+                  <ul className="space-y-2">
+                    {item.features.map((feature, i) => (
+                      <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <div className="w-2 h-2 rounded-full bg-primary" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Implementation Process - Inspired by Biogax */}
+      <section className="py-24 px-4 bg-muted/40">
+        <div className="container mx-auto max-w-5xl">
+          <div className="text-center mb-20">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold shadow-sm mb-6">
+              <Leaf className="w-4 h-4" />
+              How to Get Started
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-5xl font-bold text-foreground mb-4">
+              4 Simple Steps to Join
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Whether you're buying or selling, get started in minutes with our streamlined onboarding process.
+            </p>
+          </div>
+
+          <div className="relative">
+            {/* Timeline line - hidden on mobile */}
+            <div className="hidden md:block absolute top-24 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-secondary" style={{ width: 'calc(100% - 8px)', marginLeft: '16px' }} />
+
+            <div className="grid md:grid-cols-4 gap-6 md:gap-0">
+              {[
+                {
+                  number: "01",
+                  title: "Sign Up",
+                  desc: "Create your account and choose your role - Buyer, Farmer, or Agent.",
+                  time: "2 mins"
+                },
+                {
+                  number: "02",
+                  title: "Verify Identity",
+                  desc: "Complete simple KYC with your ID and contact information.",
+                  time: "5 mins"
+                },
+                {
+                  number: "03",
+                  title: "Set Up Payment",
+                  desc: "Connect your MoMo wallet or bank account for seamless transactions.",
+                  time: "3 mins"
+                },
+                {
+                  number: "04",
+                  title: "Start Trading",
+                  desc: "Browse marketplace, list products, or coordinate shipments immediately.",
+                  time: "Ready!"
+                },
+              ].map((step, idx) => (
+                <div key={idx} className="relative">
+                  <div className="md:mb-24">
+                    {/* Timeline circle */}
+                    <div className="relative z-10 flex justify-center md:mb-8">
+                      <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg border-4 border-background group hover:scale-110 transition-transform duration-300">
+                        <span className="text-3xl font-black text-white">{step.number}</span>
+                      </div>
+                    </div>
+
+                    {/* Content card */}
+                    <div className="bg-card rounded-2xl p-8 border border-border text-center">
+                      <h3 className="text-xl font-bold text-foreground mb-3">{step.title}</h3>
+                      <p className="text-muted-foreground text-sm mb-4 leading-relaxed">{step.desc}</p>
+                      <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold">~{step.time}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Success Stories - Inspired by Solshine testimonials */}
+      <section className="py-24 px-4 bg-background">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-20">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold shadow-sm mb-6">
+              <Users className="w-4 h-4" />
+              Success Stories
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-5xl font-bold text-foreground mb-4">
+              Real Impact from Real People
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              See how farmers and buyers are transforming agriculture with Harvest-In.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Kofi Mensah",
+                role: "Tomato Farmer, Kumasi",
+                image: farmerPortrait,
+                quote: "I used to sell to middlemen for half price. Now I connect directly with buyers and earn 90% of the value. Harvest-In changed my farming business.",
+                rating: 5
+              },
+              {
+                name: "Ama Osei",
+                role: "Restaurant Owner, Accra",
+                image: leafyGreens,
+                quote: "Finding fresh produce at fair prices was impossible. With Harvest-In, I source directly from farmers, guarantee freshness, and support local agriculture.",
+                rating: 5
+              },
+              {
+                name: "Kwame Boateng",
+                role: "Agent, Tema",
+                image: produceBasket,
+                quote: "As an agent, I earn commissions coordinating shipments. The platform handles logistics, payments, and disputes - I just focus on connecting buyers and sellers.",
+                rating: 5
+              },
+            ].map((story, idx) => (
+              <div key={idx} className="group bg-card rounded-2xl overflow-hidden border border-border hover:border-primary/50 hover:shadow-xl transition-all duration-500 hover:-translate-y-2">
+                <div className="aspect-video overflow-hidden bg-muted">
+                  <img src={story.image} alt={story.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                </div>
+                <div className="p-8">
+                  <div className="flex gap-1 mb-4">
+                    {Array(story.rating).fill(0).map((_, i) => (
+                      <span key={i} className="text-accent text-lg">⭐</span>
+                    ))}
+                  </div>
+                  <p className="text-foreground mb-6 leading-relaxed italic">"{story.quote}"</p>
+                  <div>
+                    <p className="font-bold text-foreground">{story.name}</p>
+                    <p className="text-sm text-muted-foreground">{story.role}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
-      <section className="relative overflow-hidden py-20 md:py-28 px-4">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/10 to-secondary/20" />
         <div className="relative container mx-auto text-center max-w-3xl">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold shadow-sm mb-6">
