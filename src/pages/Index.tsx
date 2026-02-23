@@ -51,12 +51,9 @@ const Index = () => {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
-      // Simulate form submission - replace with actual API call
       console.log("Form submitted:", formData);
-      
-      // Reset form after submission
       setFormData({
         name: "",
         email: "",
@@ -65,8 +62,6 @@ const Index = () => {
         message: "",
         type: "partnership"
       });
-      
-      // Show success message (implement toast notification as needed)
       alert("Thank you! We'll be in touch soon.");
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -81,7 +76,6 @@ const Index = () => {
 
       {/* Hero with Video Background */}
       <section className="relative overflow-hidden bg-black min-h-screen flex items-center">
-        {/* Video Background */}
         <div className="absolute inset-0 w-full h-full">
           <video
             autoPlay
@@ -92,11 +86,9 @@ const Index = () => {
           >
             <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/yhs-Qc3elEDn2VeCqrERq50jTGyRJaRSx5.mp4" type="video/mp4" />
           </video>
-          {/* Advanced Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-black/85 via-black/60 to-black/40" />
         </div>
 
-        {/* Hero Content */}
         <div className="relative container mx-auto px-4 py-20 md:py-32">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8 max-w-xl">
@@ -134,7 +126,6 @@ const Index = () => {
                 </Button>
               </div>
 
-              {/* Stats */}
               <div className="grid grid-cols-3 gap-6 pt-8 border-t border-white/15">
                 <div className="hover:transform hover:scale-105 transition-transform duration-300">
                   <p className="text-4xl font-black text-primary">500+</p>
@@ -151,7 +142,6 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Right side - Hidden on mobile, shown on lg */}
             <div className="hidden lg:flex flex-col justify-center items-center space-y-6">
               <div className="group bg-white/10 backdrop-blur-2xl rounded-3xl p-8 border-2 border-white/20 max-w-sm hover:bg-white/15 hover:border-white/40 transition-all duration-500 shadow-2xl">
                 <div className="flex items-center gap-4 mb-4">
@@ -175,7 +165,6 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Animated Scroll Indicator */}
         <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2">
           <div className="flex flex-col items-center gap-3 animate-bounce">
             <p className="text-white/60 text-xs font-semibold uppercase tracking-widest">Scroll to explore</p>
@@ -190,9 +179,7 @@ const Index = () => {
       <section className="py-20 px-4 bg-gradient-to-b from-background to-muted/30">
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              Why Harvest-In?
-            </h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Why Harvest-In?</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               We've simplified agriculture by removing middlemen and creating direct connections between farmers and buyers.
             </p>
@@ -224,16 +211,13 @@ const Index = () => {
               <Leaf className="w-4 h-4" />
               How It Works
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              One Platform, Many Roles
-            </h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">One Platform, Many Roles</h2>
             <p className="text-muted-foreground text-lg max-w-xl mx-auto">
               Harvest-In connects every link in the agricultural chain with simplicity and transparency.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
-            {/* Buyer Card */}
             <div className="group relative bg-gradient-to-br from-card to-card/80 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-2 border border-border hover:border-primary/50">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/0 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="relative aspect-[4/3] overflow-hidden">
@@ -244,13 +228,12 @@ const Index = () => {
                 <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-3">Buyer</span>
                 <h3 className="font-bold text-lg text-foreground mb-2">Shop Fresh</h3>
                 <p className="text-sm text-muted-foreground mb-4">Browse produce, choose transport, pay fair prices.</p>
-                <button onClick={handleGoToMarketplace} className="text-primary font-semibold text-sm hover:gap-2 hover:underline inline-flex items-center gap-1 transition-all">
+                <button onClick={handleGoToMarketplace} className="text-primary font-semibold text-sm hover:underline inline-flex items-center gap-1">
                   Go to Marketplace <ArrowRight className="w-3 h-3" />
                 </button>
               </div>
             </div>
 
-            {/* Farmer Card */}
             <div className="group relative bg-gradient-to-br from-card to-card/80 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-2 border border-border hover:border-secondary/50">
               <div className="absolute inset-0 bg-gradient-to-br from-secondary/0 to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="relative aspect-[4/3] overflow-hidden">
@@ -261,13 +244,12 @@ const Index = () => {
                 <span className="inline-block px-3 py-1 rounded-full bg-secondary/10 text-secondary text-xs font-semibold mb-3">Farmer</span>
                 <h3 className="font-bold text-lg text-foreground mb-2">Sell Direct</h3>
                 <p className="text-sm text-muted-foreground mb-4">List produce, get 90% of sales straight to MoMo.</p>
-                <button onClick={handleJoinAsFarmer} className="text-primary font-semibold text-sm hover:gap-2 hover:underline inline-flex items-center gap-1 transition-all">
+                <button onClick={handleJoinAsFarmer} className="text-primary font-semibold text-sm hover:underline inline-flex items-center gap-1">
                   Farmer Dashboard <ArrowRight className="w-3 h-3" />
                 </button>
               </div>
             </div>
 
-            {/* Agent Card */}
             <div className="group relative bg-gradient-to-br from-card to-card/80 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-2 border border-border hover:border-accent/50">
               <div className="absolute inset-0 bg-gradient-to-br from-accent/0 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="relative aspect-[4/3] overflow-hidden">
@@ -278,13 +260,12 @@ const Index = () => {
                 <span className="inline-block px-3 py-1 rounded-full bg-accent/10 text-accent-foreground text-xs font-semibold mb-3">Agent</span>
                 <h3 className="font-bold text-lg text-foreground mb-2">Coordinate</h3>
                 <p className="text-sm text-muted-foreground mb-4">Bridge the gap, manage logistics, earn commission.</p>
-                <button onClick={handleJoinAsAgent} className="text-primary font-semibold text-sm hover:gap-2 hover:underline inline-flex items-center gap-1 transition-all">
+                <button onClick={handleJoinAsAgent} className="text-primary font-semibold text-sm hover:underline inline-flex items-center gap-1">
                   Agent Dashboard <ArrowRight className="w-3 h-3" />
                 </button>
               </div>
             </div>
 
-            {/* Admin Card */}
             <div className="group relative bg-gradient-to-br from-card to-card/80 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-2 border border-border hover:border-destructive/50">
               <div className="absolute inset-0 bg-gradient-to-br from-destructive/0 to-destructive/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
@@ -294,13 +275,12 @@ const Index = () => {
                 <span className="inline-block px-3 py-1 rounded-full bg-destructive/10 text-destructive text-xs font-semibold mb-3">Admin</span>
                 <h3 className="font-bold text-lg text-foreground mb-2">Control Center</h3>
                 <p className="text-sm text-muted-foreground mb-4">Manage users, orders, payments & analytics.</p>
-                <Link to="/admin/login" className="text-primary font-semibold text-sm hover:gap-2 hover:underline inline-flex items-center gap-1 transition-all">
+                <Link to="/admin/login" className="text-primary font-semibold text-sm hover:underline inline-flex items-center gap-1">
                   Admin Portal <ArrowRight className="w-3 h-3" />
                 </Link>
               </div>
             </div>
 
-            {/* USSD Card */}
             <div className="group relative bg-gradient-to-br from-primary to-accent rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
               <div className="absolute inset-0 opacity-0 group-hover:opacity-20 bg-white transition-opacity duration-300" />
               <div className="relative aspect-[4/3] bg-gradient-to-br from-primary/80 to-accent/80 flex items-center justify-center">
@@ -310,7 +290,7 @@ const Index = () => {
                 <span className="inline-block px-3 py-1 rounded-full bg-white/20 text-white text-xs font-semibold mb-3">No Internet?</span>
                 <h3 className="font-bold text-lg text-white mb-2">Call & Shop</h3>
                 <p className="text-sm text-white/80 mb-4">Dial our USSD code and access the full marketplace from any phone.</p>
-                <Link to="/ussd" className="text-white font-semibold text-sm hover:gap-2 hover:underline inline-flex items-center gap-1 transition-all">
+                <Link to="/ussd" className="text-white font-semibold text-sm hover:underline inline-flex items-center gap-1">
                   Try USSD Demo <ArrowRight className="w-3 h-3" />
                 </Link>
               </div>
@@ -319,7 +299,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Industries/User Types We Serve */}
+      {/* Industries We Serve */}
       <section className="py-24 px-4 bg-gradient-to-b from-background via-muted/20 to-background">
         <div className="container mx-auto">
           <div className="text-center mb-20">
@@ -379,7 +359,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Implementation Process - Inspired by Biogax */}
+      {/* How to Get Started */}
       <section className="py-24 px-4 bg-muted/40">
         <div className="container mx-auto max-w-5xl">
           <div className="text-center mb-20">
@@ -396,46 +376,23 @@ const Index = () => {
           </div>
 
           <div className="relative">
-            {/* Timeline line - hidden on mobile */}
             <div className="hidden md:block absolute top-24 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-secondary" style={{ width: 'calc(100% - 8px)', marginLeft: '16px' }} />
 
             <div className="grid md:grid-cols-4 gap-6 md:gap-0">
               {[
-                {
-                  number: "01",
-                  title: "Sign Up",
-                  desc: "Create your account and choose your role - Buyer, Farmer, or Agent.",
-                  time: "2 mins"
-                },
-                {
-                  number: "02",
-                  title: "Verify Identity",
-                  desc: "Complete simple KYC with your ID and contact information.",
-                  time: "5 mins"
-                },
-                {
-                  number: "03",
-                  title: "Set Up Payment",
-                  desc: "Connect your MoMo wallet or bank account for seamless transactions.",
-                  time: "3 mins"
-                },
-                {
-                  number: "04",
-                  title: "Start Trading",
-                  desc: "Browse marketplace, list products, or coordinate shipments immediately.",
-                  time: "Ready!"
-                },
+                { number: "01", title: "Sign Up", desc: "Create your account and choose your role - Buyer, Farmer, or Agent.", time: "2 mins" },
+                { number: "02", title: "Verify Identity", desc: "Complete simple KYC with your ID and contact information.", time: "5 mins" },
+                { number: "03", title: "Set Up Payment", desc: "Connect your MoMo wallet or bank account for seamless transactions.", time: "3 mins" },
+                { number: "04", title: "Start Trading", desc: "Browse marketplace, list products, or coordinate shipments immediately.", time: "Ready!" },
               ].map((step, idx) => (
                 <div key={idx} className="relative">
                   <div className="md:mb-24">
-                    {/* Timeline circle */}
                     <div className="relative z-10 flex justify-center md:mb-8">
                       <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg border-4 border-background group hover:scale-110 transition-transform duration-300">
                         <span className="text-3xl font-black text-white">{step.number}</span>
                       </div>
                     </div>
 
-                    {/* Content card */}
                     <div className="bg-card rounded-2xl p-8 border border-border text-center">
                       <h3 className="text-xl font-bold text-foreground mb-3">{step.title}</h3>
                       <p className="text-muted-foreground text-sm mb-4 leading-relaxed">{step.desc}</p>
@@ -449,7 +406,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Success Stories - Inspired by Solshine testimonials */}
+      {/* Success Stories */}
       <section className="py-24 px-4 bg-background">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-20">
@@ -687,17 +644,48 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-10 px-4 border-t border-border bg-card">
-        <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-              <Sprout className="w-4 h-4 text-primary-foreground" />
+      <footer className="bg-card border-t border-border">
+        <div className="container mx-auto px-4 py-16 md:py-20">
+          <div className="grid md:grid-cols-4 gap-12 mb-12">
+            <div>
+              <h4 className="font-bold text-foreground mb-4">Harvest-In</h4>
+              <p className="text-muted-foreground text-sm">
+                Connecting farmers directly with buyers for fair trade and sustainable agriculture across Ghana.
+              </p>
             </div>
-            <span className="font-bold text-foreground">Harvest-In</span>
+            <div>
+              <h5 className="font-semibold text-foreground mb-4">Platform</h5>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><Link to="/marketplace" className="hover:text-primary">Marketplace</Link></li>
+                <li><Link to="/farmer" className="hover:text-primary">For Farmers</Link></li>
+                <li><Link to="/agent" className="hover:text-primary">For Agents</Link></li>
+                <li><Link to="/ussd" className="hover:text-primary">USSD</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h5 className="font-semibold text-foreground mb-4">Company</h5>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="#about" className="hover:text-primary">About Us</a></li>
+                <li><a href="#contact" className="hover:text-primary">Contact</a></li>
+                <li><a href="#blog" className="hover:text-primary">Blog</a></li>
+                <li><a href="#careers" className="hover:text-primary">Careers</a></li>
+              </ul>
+            </div>
+            <div>
+              <h5 className="font-semibold text-foreground mb-4">Legal</h5>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="#privacy" className="hover:text-primary">Privacy Policy</a></li>
+                <li><a href="#terms" className="hover:text-primary">Terms of Service</a></li>
+                <li><a href="#cookies" className="hover:text-primary">Cookie Policy</a></li>
+              </ul>
+            </div>
           </div>
-          <p className="text-muted-foreground text-sm">
-            © 2026 Harvest-In. Connecting Ghana's Agricultural Network.
-          </p>
+
+          <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center">
+            <p className="text-muted-foreground text-sm">
+              © 2024 Harvest-In. All rights reserved. Empowering agriculture in Ghana.
+            </p>
+          </div>
         </div>
       </footer>
     </div>
