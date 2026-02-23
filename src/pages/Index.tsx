@@ -512,6 +512,7 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
+      <section className="relative overflow-hidden py-20 md:py-28 px-4">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/10 to-secondary/20" />
         <div className="relative container mx-auto text-center max-w-3xl">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold shadow-sm mb-6">
