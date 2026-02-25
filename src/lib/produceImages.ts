@@ -1,12 +1,12 @@
 // Mapping of produce names/keywords to local images
-import cassava from "@/assets/cassava.jpg";
-import leafyGreens from "@/assets/leafy-greens.jpg";
-import maize from "@/assets/maize.jpg";
-import peppers from "@/assets/peppers.jpg";
-import plantain from "@/assets/plantain.jpg";
-import produceBasket from "@/assets/produce-basket.jpg";
-import tomatoes from "@/assets/tomatoes.jpg";
-import yams from "@/assets/yams.jpg";
+const cassava = "/cassava.jpg";
+const leafyGreens = "/leafy-greens.jpg";
+const maize = "/maize.jpg";
+const peppers = "/peppers.jpg";
+const plantain = "/plantain.jpg";
+const produceBasket = "/produce-basket.jpg";
+const tomatoes = "/tomatoes.jpg";
+const yams = "/yams.jpg";
 
 // Keyword-based image matching
 const produceKeywords: Record<string, string> = {
