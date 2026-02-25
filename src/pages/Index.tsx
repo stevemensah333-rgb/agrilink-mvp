@@ -3,11 +3,7 @@ import { ArrowRight, Phone, Sprout, Users, Truck, ShieldCheck } from "lucide-rea
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import { useAuth } from "@/contexts/AuthContext";
-
-import farmerHero from "@/assets/farmer-hero.jpg";
-import produceBasket from "@/assets/produce-basket.jpg";
-import leafyGreens from "@/assets/leafy-greens.jpg";
-import farmerPortrait from "@/assets/farmer-portrait.jpg";
+import { leafyGreens, produceBasket, yams } from "@/lib/produceImages";
 
 const Index = () => {
   const { user } = useAuth();
@@ -77,7 +73,7 @@ const Index = () => {
               <div className="relative">
                 <div className="rounded-3xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500">
                   <img
-                    src={farmerHero}
+                    src={leafyGreens}
                     alt="Farmer tending to crops at golden hour"
                     className="w-full h-[520px] object-cover"
                   />
@@ -153,7 +149,7 @@ const Index = () => {
             {/* Farmer Card */}
             <div className="group bg-card rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <div className="aspect-[4/3] overflow-hidden">
-                <img src={farmerPortrait} alt="Farmer" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img src={yams} alt="Farmer" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
               <div className="p-6">
                 <span className="inline-block px-3 py-1 rounded-full bg-secondary/10 text-secondary text-xs font-semibold mb-3">Farmer</span>
